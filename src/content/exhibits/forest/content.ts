@@ -95,9 +95,10 @@ export const forestTrackChallenge: TrackChallenge = {
 };
 
 export const forestCopy = {
-  swipeHint: "Swipe to meet another forest giant",
+  swipeHint: "Swipe left or right to explore other forest giants",
   compareTitle: "Compare",
   compareLead: "Place two forest dwellers side by side.",
+  compareMode: "Compare mode",
   tracksTitle: "Who Left This Track?",
   tracksLead: "Read the clue, then choose who passed this way.",
   callLabel: "Hear a call",
@@ -108,7 +109,78 @@ export const forestCopy = {
   learnMore: "A little more",
   showLess: "Show less",
   sizeNote: "Silhouettes show relative size — exact measures await curator confirmation.",
+  humanScale: "Human scale",
+  navLead: "Meet the great travelers of the boreal forest. Touch an animal to explore.",
+  aboutTitle: "About",
+  didYouKnow: "Did you know?",
+  statsPending: "Typical adult ranges",
+  backHome: "Back to exhibit home",
+  fullProfile: "Full profile",
 } as const;
+
+/** Soft provisional display stats for the insight panel — not floor-certified. */
+export type ForestStatLine = {
+  id: "height" | "weight" | "lifespan" | "tracks";
+  label: string;
+  value: string;
+};
+
+export const forestProvisionalStats: Record<string, ForestStatLine[]> = {
+  moose: [
+    { id: "height", label: "Height", value: "1.8 – 2.3 m" },
+    { id: "weight", label: "Weight", value: "385 – 700 kg" },
+    { id: "lifespan", label: "Lifespan", value: "15 – 20 years" },
+    { id: "tracks", label: "Tracks", value: "12 – 15 cm" },
+  ],
+  "black-bear": [
+    { id: "height", label: "Height", value: "0.7 – 1.0 m" },
+    { id: "weight", label: "Weight", value: "90 – 270 kg" },
+    { id: "lifespan", label: "Lifespan", value: "15 – 25 years" },
+    { id: "tracks", label: "Tracks", value: "10 – 16 cm" },
+  ],
+  "grey-wolf": [
+    { id: "height", label: "Height", value: "0.6 – 0.9 m" },
+    { id: "weight", label: "Weight", value: "30 – 50 kg" },
+    { id: "lifespan", label: "Lifespan", value: "6 – 13 years" },
+    { id: "tracks", label: "Tracks", value: "9 – 12 cm" },
+  ],
+  "woodland-caribou": [
+    { id: "height", label: "Height", value: "1.0 – 1.2 m" },
+    { id: "weight", label: "Weight", value: "110 – 210 kg" },
+    { id: "lifespan", label: "Lifespan", value: "8 – 15 years" },
+    { id: "tracks", label: "Tracks", value: "8 – 12 cm" },
+  ],
+  "white-tailed-deer": [
+    { id: "height", label: "Height", value: "0.8 – 1.1 m" },
+    { id: "weight", label: "Weight", value: "40 – 90 kg" },
+    { id: "lifespan", label: "Lifespan", value: "6 – 14 years" },
+    { id: "tracks", label: "Tracks", value: "5 – 8 cm" },
+  ],
+  "canada-lynx": [
+    { id: "height", label: "Height", value: "0.5 – 0.65 m" },
+    { id: "weight", label: "Weight", value: "8 – 14 kg" },
+    { id: "lifespan", label: "Lifespan", value: "10 – 15 years" },
+    { id: "tracks", label: "Tracks", value: "8 – 10 cm" },
+  ],
+};
+
+export function getForestProvisionalStats(animalId: string): ForestStatLine[] {
+  return (
+    forestProvisionalStats[animalId] ?? [
+      { id: "height", label: "Height", value: "—" },
+      { id: "weight", label: "Weight", value: "—" },
+      { id: "lifespan", label: "Lifespan", value: "—" },
+      { id: "tracks", label: "Tracks", value: "—" },
+    ]
+  );
+}
+
+export function forestSilhouetteSrc(animalId: string): string {
+  return `/media/animals/silhouettes/${animalId}.png`;
+}
+
+export const FOREST_HUMAN_SILHOUETTE = "/media/animals/silhouettes/human.png";
+export const FOREST_CINEMATIC_BG = "/media/habitats/forest-cinematic-bg.png";
 
 export function getForestAnimal(animalId: AnimalId): ForestAnimalPresentation | undefined {
   return forestAnimals.find((entry) => entry.animalId === animalId);

@@ -113,6 +113,7 @@ function baseConfig(
     attractModeDelayMs: partial.attractModeDelayMs,
     showProgress: partial.showProgress,
     showTitleArea: partial.showTitleArea,
+    showShellBrand: partial.showShellBrand,
     allowedNavigation: {
       allowHomeRestart: true,
       allowedPaths: partial.allowedPaths ?? [`/exhibit/${partial.id}`],
@@ -157,8 +158,9 @@ export const exhibitConfigs: Record<ExhibitSlug, ExhibitConfig> = {
     invitation: "Swipe through the giants of the boreal — touch to enter the forest.",
     inactivityTimeoutMs: idleConfig.timeoutMs,
     attractModeDelayMs: idleConfig.timeoutMs + 5_000,
-    showProgress: true,
+    showProgress: false,
     showTitleArea: false,
+    showShellBrand: false,
     fallbackTone: "boreal-night",
     ambientTone: "mist",
     attractExtras: {

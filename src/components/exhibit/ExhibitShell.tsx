@@ -287,9 +287,17 @@ export function ExhibitShell({
             <div className="safe-frame pointer-events-none flex h-full flex-col justify-between">
               <div className="pointer-events-auto flex items-start justify-between gap-[var(--space-4)]">
                 <div className="min-w-0 flex-1 pr-[var(--space-6)]">
-                  <p className="text-[length:var(--text-label)] tracking-[var(--tracking-wide)] text-[var(--color-museum-warm)] uppercase">
-                    <StaffLogoHold>Northern Ontario Museum of Wonder</StaffLogoHold>
-                  </p>
+                  {config.showShellBrand !== false ? (
+                    <p className="text-[length:var(--text-label)] tracking-[var(--tracking-wide)] text-[var(--color-museum-warm)] uppercase">
+                      <StaffLogoHold>Northern Ontario Museum of Wonder</StaffLogoHold>
+                    </p>
+                  ) : (
+                    <span className="inline-block">
+                      <StaffLogoHold>
+                        <span className="sr-only">Northern Ontario Museum of Wonder</span>
+                      </StaffLogoHold>
+                    </span>
+                  )}
                   {showTitle ? (
                     <h1 className="mt-[var(--space-2)] font-[family-name:var(--font-display)] text-[length:var(--text-title)] leading-[var(--leading-title)] tracking-[var(--tracking-title)]">
                       {config.title}

@@ -91,6 +91,8 @@ export type ExhibitConfig = {
   showProgress: boolean;
   /** Compact title strip in chrome — set false when the exhibit owns branding */
   showTitleArea: boolean;
+  /** When false, hide the shell museum lockup (exhibit owns branding in-layout). */
+  showShellBrand?: boolean;
   /** Optional default background MediaAsset references for ops clarity */
   backgroundAssets?: {
     image?: MediaAsset;

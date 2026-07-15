@@ -6,6 +6,7 @@ import {
   silhouetteKindFromAnimalId,
   type SilhouetteKind,
 } from "@/components/animals/AnimalSilhouette";
+import { forestSilhouetteSrc } from "@/content/exhibits/forest/content";
 import { HUMAN_RELATIVE_HEIGHT } from "@/content/exhibits/forest/content";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { scenicTransition } from "@/lib/motion/tokens";
@@ -69,7 +70,21 @@ export function SizeComparison({
                 style={{ height, width: Math.max(48, height * 0.7) }}
                 aria-hidden
               >
-                <AnimalSilhouette kind={kind} prominent={!isHuman} className="max-h-full" />
+                {!isHuman &&
+                ["moose", "black-bear", "grey-wolf", "woodland-caribou", "white-tailed-deer", "canada-lynx"].includes(
+                  subject.id,
+                ) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={forestSilhouetteSrc(subject.id)}
+                    alt=""
+                    className="max-h-full w-auto object-contain object-bottom"
+                    style={{ filter: "brightness(0) invert(0.72)" }}
+                    draggable={false}
+                  />
+                ) : (
+                  <AnimalSilhouette kind={kind} prominent={!isHuman} className="max-h-full" />
+                )}
               </div>
               <p
                 className={cn(

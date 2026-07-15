@@ -4,20 +4,18 @@ import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { getAnimal } from "@/content/animals";
 import {
-  FOREST_EXHIBIT_SUBTITLE,
-  FOREST_EXHIBIT_TITLE,
   forestAnimals,
+  forestCopy,
   type ForestMode,
   type ForestProfileTab,
 } from "@/content/exhibits/forest/content";
-import { AnimalProfilePanel } from "@/components/animals/AnimalProfilePanel";
-import { ProgressDots } from "@/components/navigation/ProgressDots";
-import { AnimalCallButton } from "@/components/exhibits/forest/AnimalCallButton";
-import { AnimalCarousel } from "@/components/exhibits/forest/AnimalCarousel";
 import { CompareMode } from "@/components/exhibits/forest/CompareMode";
+import { ForestAnimalNav } from "@/components/exhibits/forest/ForestAnimalNav";
+import { ForestHeroStage } from "@/components/exhibits/forest/ForestHeroStage";
+import { ForestInsightPanel } from "@/components/exhibits/forest/ForestInsightPanel";
 import { ForestStage } from "@/components/exhibits/forest/ForestStage";
 import { TrackQuiz } from "@/components/exhibits/forest/TrackQuiz";
-import { LargeTouchButton } from "@/components/touch/LargeTouchButton";
+import { Touchable } from "@/components/touch/Touchable";
 import { useAnimalProfileOverlay } from "@/hooks/useAnimalProfileOverlay";
 import { useKioskSession } from "@/hooks/useKioskSession";
 import type { AnimalId } from "@/types/content";
@@ -25,10 +23,10 @@ import type { AnimalId } from "@/types/content";
 const FOREST_ANIMAL_IDS = forestAnimals.map((entry) => entry.animalId);
 
 /**
- * Giants of the Forest — swipeable boreal giants with profile tabs, compare, tracks, and calls.
+ * Giants of the Forest — cinematic three-panel composition matching the installation look.
  */
 export function ForestExhibit() {
-  const { registerResetHandler, noteInteraction } = useKioskSession();
+  const { registerResetHandler, noteInteraction, softReset } = useKioskSession();
   const {
     openProfile,
     closeProfile,
@@ -42,8 +40,17 @@ export function ForestExhibit() {
   const [compareLeft, setCompareLeft] = useState<AnimalId | null>("moose");
   const [compareRight, setCompareRight] = useState<AnimalId | null>("canada-lynx");
 
-  const presentation = forestAnimals[index] ?? forestAnimals[0];
+  const presentation = forestAnimals[index] ?? forestAnimals[0]!;
   const animal = getAnimal(presentation.animalId);
+
+  const selectIndex = useCallback(
+    (next: number) => {
+      noteInteraction();
+      setIndex(next);
+      setTab("meet");
+    },
+    [noteInteraction],
+  );
 
   const resetForest = useCallback(() => {
     setIndex(0);
@@ -69,88 +76,62 @@ export function ForestExhibit() {
     <div className="relative h-full w-full overflow-hidden">
       <ForestStage />
 
-      <div className="safe-frame relative z-10 flex h-full flex-col justify-between py-[var(--space-2)]">
-        <header className="max-w-[40rem]">
-          <p className="text-[length:var(--text-label)] tracking-[var(--tracking-wide)] text-[var(--color-museum-warm)] uppercase">
-            Boreal giants
-          </p>
-          <h1 className="mt-[var(--space-2)] font-[family-name:var(--font-display)] text-[length:var(--text-display-md)] leading-[var(--leading-display)] text-[var(--text-on-dark)]">
-            {FOREST_EXHIBIT_TITLE}
-          </h1>
-          <p className="mt-[var(--space-3)] text-[length:var(--text-lead)] text-[var(--text-on-dark-muted)]">
-            {FOREST_EXHIBIT_SUBTITLE}
-          </p>
-        </header>
-
-        <div className="grid min-h-0 flex-1 grid-cols-1 items-end gap-[var(--space-6)] py-[var(--space-4)] lg:grid-cols-[1.15fr_0.95fr]">
-          <AnimalCarousel
-            index={index}
-            onIndexChange={(next) => {
+      <div className="relative z-10 flex h-full flex-col">
+        {/* Leave room for shell sound / restart chrome */}
+        <div className="flex min-h-0 flex-1 pt-12">
+          <ForestAnimalNav
+            activeIndex={index}
+            onSelect={selectIndex}
+            onCompare={() => {
               noteInteraction();
-              setIndex(next);
-              setTab("meet");
+              setMode("compare");
             }}
           />
 
-          <div className="space-y-[var(--space-4)]">
-            <AnimalProfilePanel
+          <div className="flex min-w-0 flex-1 gap-6 px-6 pb-3 pt-2 xl:gap-8 xl:px-8">
+            <ForestHeroStage
               animal={animal}
-              content={presentation}
-              activeTab={tab}
-              onTabChange={(next) => {
-                noteInteraction();
-                setTab(next);
-              }}
+              presentation={presentation}
+              index={index}
+              count={forestAnimals.length}
+              onIndexChange={selectIndex}
             />
-            <AnimalCallButton animal={animal} />
-            <LargeTouchButton
-              variant="secondary"
-              onClick={() => {
-                noteInteraction();
-                openProfile({
-                  animalId: animal.id,
-                  animalIds: FOREST_ANIMAL_IDS,
-                  enableCompare: true,
-                });
-              }}
-            >
-              Full profile
-            </LargeTouchButton>
+
+            <div className="flex items-stretch pt-2">
+              <ForestInsightPanel
+                animal={animal}
+                content={presentation}
+                activeTab={tab}
+                onTabChange={(next) => {
+                  noteInteraction();
+                  setTab(next);
+                }}
+                onOpenFullProfile={() => {
+                  noteInteraction();
+                  openProfile({
+                    animalId: animal.id,
+                    animalIds: FOREST_ANIMAL_IDS,
+                    enableCompare: true,
+                  });
+                }}
+              />
+            </div>
           </div>
         </div>
 
-        <footer className="flex flex-wrap items-center justify-between gap-[var(--space-4)] pb-[var(--space-2)]">
-          <ProgressDots
-            count={forestAnimals.length}
-            activeIndex={index}
-            onSelect={(next) => {
-              noteInteraction();
-              setIndex(next);
-              setTab("meet");
-            }}
-            label="Forest animals"
-          />
-          <div className="flex flex-wrap gap-[var(--space-3)]">
-            <LargeTouchButton
-              variant="secondary"
-              onClick={() => {
-                noteInteraction();
-                setMode("compare");
-              }}
-            >
-              Compare
-            </LargeTouchButton>
-            <LargeTouchButton
-              variant="secondary"
-              onClick={() => {
-                noteInteraction();
-                setMode("tracks");
-              }}
-            >
-              Who Left This Track?
-            </LargeTouchButton>
-          </div>
-        </footer>
+        <Touchable
+          soft
+          className="flex h-[3.25rem] w-full items-center justify-center gap-2 bg-[var(--color-museum-warm)] text-[14px] font-semibold tracking-[0.16em] text-[#1a2430] uppercase"
+          onClick={() => {
+            noteInteraction();
+            softReset("home-control");
+          }}
+        >
+          <span aria-hidden className="text-lg leading-none">
+            ⌂
+          </span>
+          {forestCopy.backHome}
+        </Touchable>
       </div>
 
       <AnimatePresence>
