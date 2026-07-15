@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="NOMOW">
+  <rect width="512" height="512" fill="#0a2233"/>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3328"/>
+      <stop offset="100%" stop-color="#0a2233"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <circle cx="256" cy="210" r="72" fill="none" stroke="#d4b07a" stroke-width="14"/>
+  <path d="M140 360c36-48 84-72 116-72s80 24 116 72" fill="none" stroke="#5eb8a8" stroke-width="14" stroke-linecap="round"/>
+  <text x="256" y="455" text-anchor="middle" fill="#eef3f6" font-family="Georgia, serif" font-size="42" letter-spacing="6">NOMOW</text>
+</svg>

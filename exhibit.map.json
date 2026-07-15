@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "projects": [
+    { "kioskId": "kiosk-01", "slug": "welcome", "url": "/exhibit/welcome" },
+    { "kioskId": "kiosk-02", "slug": "forest", "url": "/exhibit/forest" },
+    { "kioskId": "kiosk-03", "slug": "water", "url": "/exhibit/water" },
+    { "kioskId": "kiosk-04", "slug": "sky", "url": "/exhibit/sky" },
+    { "kioskId": "kiosk-05", "slug": "night", "url": "/exhibit/night" },
+    { "kioskId": "kiosk-06", "slug": "seasons", "url": "/exhibit/seasons" },
+    { "kioskId": "kiosk-07", "slug": "tracks", "url": "/exhibit/tracks" },
+    { "kioskId": "kiosk-08", "slug": "coexistence", "url": "/exhibit/coexistence" }
+  ]
+}

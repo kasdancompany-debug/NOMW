@@ -1,0 +1,195 @@
+/**
+ * Northern Ontario Museum of Wonder — Design Tokens
+ *
+ * CSS custom properties are the source of truth.
+ * Tailwind maps these via @theme in globals.css.
+ * Prefer tokens over hard-coded visual values in components.
+ */
+
+:root {
+  /* ─── Color: foundations ───────────────────────────────── */
+  --color-night: #061018;
+  --color-deep-lake: #0a2233;
+  --color-boreal: #0f241c;
+  --color-canopy: #1a3328;
+  --color-moss: #4f6f45;
+  --color-moss-lit: #6f8f5e;
+  --color-rock: #6a645c;
+  --color-rock-lit: #9a9388;
+  --color-mist: #c5d0d8;
+  --color-snow: #eef3f6;
+  --color-aurora-teal: #5eb8a8;
+  --color-aurora-violet: #7a8fc4;
+  --color-aurora-green: #8bc99a;
+  --color-museum-warm: #d4b07a;
+  --color-museum-ember: #c4924a;
+  --color-pine-needle: #2a4a38;
+
+  /* Semantic surfaces */
+  --color-bg: var(--color-night);
+  --color-bg-elevated: #0d1c22;
+  --color-bg-panel: rgba(10, 28, 36, 0.72);
+  --color-fg: #f3efe6;
+  /* Higher contrast supporting text for standing-viewer distance */
+  --color-fg-muted: #c5d0c9;
+  --color-fg-subtle: #9aaba2;
+  --color-accent: var(--color-museum-warm);
+  --color-accent-strong: var(--color-museum-ember);
+  --color-focus: var(--color-aurora-teal);
+  --color-danger: #c45b4a;
+
+  /* Text contrast pairs (WCAG-minded on dark installation surfaces) */
+  --text-on-dark: var(--color-fg);
+  --text-on-dark-muted: var(--color-fg-muted);
+  --text-on-light: #122018;
+  --text-on-light-muted: #3a4a40;
+  --text-on-accent: #1a140c;
+  --scrim-for-text: rgba(6, 16, 24, 0.55);
+  --scrim-for-text-strong: rgba(6, 16, 24, 0.78);
+
+  /* ─── Typography ───────────────────────────────────────── */
+  --font-display: var(--font-museum-display), "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --font-body: var(--font-museum-body), "Avenir Next", "Segoe UI", sans-serif;
+  --font-ui: var(--font-museum-body), "Avenir Next", "Segoe UI", sans-serif;
+
+  --text-display-xl: clamp(4.5rem, 7vw, 7rem);
+  --text-display-lg: clamp(3.25rem, 5vw, 5rem);
+  --text-display-md: clamp(2.25rem, 3.2vw, 3.25rem);
+  --text-title: clamp(1.75rem, 2.4vw, 2.5rem);
+  --text-lead: clamp(1.25rem, 1.6vw, 1.5rem);
+  --text-body: 1.125rem;
+  --text-body-sm: 1.0625rem;
+  --text-label: 0.9375rem;
+  /* Prefer --text-label for visitor chrome; micro is staff / secondary only */
+  --text-micro: 0.8125rem;
+
+  --leading-display: 0.95;
+  --leading-title: 1.1;
+  --leading-body: 1.55;
+  --leading-tight: 1.25;
+
+  --tracking-display: -0.02em;
+  --tracking-title: -0.01em;
+  --tracking-label: 0.18em;
+  --tracking-wide: 0.28em;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ─── Spacing (8px base) ───────────────────────────────── */
+  --space-0: 0;
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+  --space-7: 2.5rem; /* 40 */
+  --space-8: 3rem; /* 48 */
+  --space-9: 4rem; /* 64 */
+  --space-10: 5rem; /* 80 */
+  --space-11: 6rem; /* 96 */
+  --space-12: 8rem; /* 128 */
+
+  /* Display-safe margins for 1920×1080 bezels / edge gestures */
+  --safe-margin-min: 3rem; /* 48px */
+  --safe-margin: 4rem; /* 64px */
+  --safe-margin-lg: 5rem; /* 80px */
+  --safe-inset: var(--safe-margin);
+
+  /* Touch targets */
+  --touch-min: 4rem; /* 64px */
+  --touch-md: 4.5rem; /* 72px */
+  --touch-lg: 6rem; /* 96px */
+  --touch-gap: 1rem;
+
+  /* Radius — restrained, not pill / card-heavy */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-panel: 6px;
+
+  /* Elevation — atmospheric, single soft plane */
+  --elevation-0: none;
+  --elevation-1: 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --elevation-2: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --elevation-glow-warm: 0 0 40px rgba(212, 176, 122, 0.18);
+  --elevation-glow-aurora: 0 0 48px rgba(94, 184, 168, 0.22);
+
+  /* Overlays & glass */
+  --overlay-mist: linear-gradient(
+    180deg,
+    rgba(197, 208, 216, 0.08) 0%,
+    rgba(6, 16, 24, 0.15) 40%,
+    rgba(6, 16, 24, 0.55) 100%
+  );
+  --overlay-vignette: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgba(6, 16, 24, 0.55) 100%
+  );
+  --overlay-night: linear-gradient(
+    180deg,
+    rgba(10, 34, 51, 0.35) 0%,
+    rgba(6, 16, 24, 0.7) 100%
+  );
+  --overlay-warm-light: radial-gradient(
+    ellipse at 30% 20%,
+    rgba(212, 176, 122, 0.16) 0%,
+    transparent 55%
+  );
+  --overlay-aurora: linear-gradient(
+    115deg,
+    rgba(94, 184, 168, 0.12) 0%,
+    rgba(122, 143, 196, 0.1) 45%,
+    rgba(139, 201, 154, 0.08) 100%
+  );
+  --glass-bg: rgba(12, 28, 34, 0.55);
+  --glass-border: rgba(238, 243, 246, 0.12);
+  /* 8px: enough frost for legibility without full-screen 18px GPU cost on eight kiosks */
+  --glass-blur: 8px;
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  /* Background treatments */
+  --bg-boreal-night: radial-gradient(ellipse at 30% 15%, #1a3328 0%, #0a2233 42%, #061018 100%);
+  --bg-deep-lake: radial-gradient(ellipse at 50% 0%, #143a52 0%, #0a2233 45%, #061018 100%);
+  --bg-snow-mist: linear-gradient(180deg, #1c2a32 0%, #0f1a20 50%, #0a1418 100%);
+  --bg-museum-glow: var(--overlay-warm-light), var(--bg-boreal-night);
+
+  /* Animation timing */
+  --duration-instant: 80ms;
+  --duration-fast: 160ms;
+  --duration-base: 280ms;
+  --duration-slow: 480ms;
+  --duration-scenic: 900ms;
+  --duration-ambient: 6000ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-scenic: cubic-bezier(0.33, 0.1, 0.25, 1);
+
+  /* Kiosk stage */
+  --kiosk-width: 1920;
+  --kiosk-height: 1080;
+}
+
+/* Reduced motion: shorten scenic/ambient; keep functional feedback readable */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-slow: 1ms;
+    --duration-scenic: 1ms;
+    --duration-ambient: 1ms;
+  }
+}
+
+[data-reduced-motion="true"] {
+  --duration-fast: 1ms;
+  --duration-base: 1ms;
+  --duration-slow: 1ms;
+  --duration-scenic: 1ms;
+  --duration-ambient: 1ms;
+}

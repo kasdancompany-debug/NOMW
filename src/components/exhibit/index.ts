@@ -1,0 +1,10 @@
+export { ExhibitPage } from "./ExhibitPage";
+export { ExhibitShell } from "./ExhibitShell";
+export { ExhibitExperience } from "./ExhibitExperience";
+export { ExhibitErrorBoundary } from "./shell/ExhibitErrorBoundary";
+export { ExhibitLoadingState } from "./shell/ExhibitLoadingState";
+export { AttractModeLayer } from "./shell/AttractModeLayer";
+export { SoundControl } from "./shell/SoundControl";
+export { StaffAccessZone } from "./shell/StaffAccessZone";
+export { KioskNavigationGuard } from "./shell/KioskNavigationGuard";
+export { AttractMode, TouchToExplorePrompt } from "@/components/attract";

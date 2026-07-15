@@ -1,0 +1,102 @@
+/* Named background / overlay utilities — always driven by tokens */
+
+.bg-boreal-night {
+  background: var(--bg-boreal-night);
+}
+
+.bg-deep-lake {
+  background: var(--bg-deep-lake);
+}
+
+.bg-snow-mist {
+  background: var(--bg-snow-mist);
+}
+
+.bg-museum-glow {
+  background: var(--bg-museum-glow);
+}
+
+.overlay-mist {
+  background: var(--overlay-mist);
+}
+
+.overlay-vignette {
+  background: var(--overlay-vignette);
+}
+
+.overlay-night {
+  background: var(--overlay-night);
+}
+
+.overlay-warm-light {
+  background: var(--overlay-warm-light);
+}
+
+.overlay-aurora {
+  background: var(--overlay-aurora);
+}
+
+.text-scrim {
+  background: var(--scrim-for-text);
+}
+
+.text-scrim-strong {
+  background: var(--scrim-for-text-strong);
+}
+
+.glass-surface {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--glass-highlight), var(--elevation-1);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.safe-frame {
+  padding: var(--safe-inset);
+}
+
+.touch-target {
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+}
+
+.touch-target-md {
+  min-width: var(--touch-md);
+  min-height: var(--touch-md);
+}
+
+.touch-target-lg {
+  min-width: var(--touch-lg);
+  min-height: var(--touch-lg);
+}
+
+/* Press feedback that never relies on hover */
+.touch-pressable {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.touch-pressable:active:not(:disabled) {
+  filter: brightness(1.04);
+}
+
+/* Screen-reader only — keep meaningful labels without cluttering the stage */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Clear selected / pressed chrome without neon flash */
+[data-pressed="true"]:not(:disabled) {
+  filter: brightness(1.06);
+}

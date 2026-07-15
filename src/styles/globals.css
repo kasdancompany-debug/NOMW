@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./backgrounds.css";
+@import "./kiosk.css";
+
+@theme inline {
+  /* Colors */
+  --color-night: var(--color-night);
+  --color-deep-lake: var(--color-deep-lake);
+  --color-boreal: var(--color-boreal);
+  --color-canopy: var(--color-canopy);
+  --color-moss: var(--color-moss);
+  --color-moss-lit: var(--color-moss-lit);
+  --color-rock: var(--color-rock);
+  --color-rock-lit: var(--color-rock-lit);
+  --color-mist: var(--color-mist);
+  --color-snow: var(--color-snow);
+  --color-aurora-teal: var(--color-aurora-teal);
+  --color-aurora-violet: var(--color-aurora-violet);
+  --color-aurora-green: var(--color-aurora-green);
+  --color-museum-warm: var(--color-museum-warm);
+  --color-museum-ember: var(--color-museum-ember);
+  --color-pine-needle: var(--color-pine-needle);
+
+  --color-background: var(--color-bg);
+  --color-background-elevated: var(--color-bg-elevated);
+  --color-foreground: var(--color-fg);
+  --color-foreground-muted: var(--color-fg-muted);
+  --color-foreground-subtle: var(--color-fg-subtle);
+  --color-accent: var(--color-accent);
+  --color-accent-strong: var(--color-accent-strong);
+  --color-focus: var(--color-focus);
+
+  /* Fonts */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-ui: var(--font-ui);
+
+  /* Type scale */
+  --text-display-xl: var(--text-display-xl);
+  --text-display-lg: var(--text-display-lg);
+  --text-display-md: var(--text-display-md);
+  --text-title: var(--text-title);
+  --text-lead: var(--text-lead);
+  --text-body: var(--text-body);
+  --text-body-sm: var(--text-body-sm);
+  --text-label: var(--text-label);
+  --text-micro: var(--text-micro);
+
+  /* Spacing */
+  --spacing-safe: var(--safe-margin);
+  --spacing-safe-min: var(--safe-margin-min);
+  --spacing-safe-lg: var(--safe-margin-lg);
+  --spacing-touch: var(--touch-gap);
+
+  /* Radius */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-panel: var(--radius-panel);
+
+  /* Motion */
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-scenic: var(--ease-scenic);
+  --animate-duration-fast: var(--duration-fast);
+  --animate-duration-base: var(--duration-base);
+  --animate-duration-slow: var(--duration-slow);
+  --animate-duration-scenic: var(--duration-scenic);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+::selection {
+  background: transparent;
+}
