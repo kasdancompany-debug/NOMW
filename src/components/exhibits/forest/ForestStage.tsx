@@ -1,8 +1,7 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { FOREST_CINEMATIC_BG } from "@/content/exhibits/forest/content";
-import { PlaceholderBadge } from "@/components/media/PlaceholderBadge";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/utils/cn";
 
@@ -39,12 +38,6 @@ export function ForestStage({ className }: ForestStageProps) {
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(4,12,10,0.88)_0%,rgba(4,12,10,0.35)_28%,rgba(4,12,10,0.2)_55%,rgba(4,12,10,0.55)_100%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,10,12,0.55)_0%,transparent_28%,transparent_58%,rgba(4,12,10,0.75)_100%)]" />
       <div className="absolute inset-0 overlay-vignette opacity-90" />
-
-      <PlaceholderBadge
-        label="Forest cinematic plate · replace with final WebP / H.264 loop"
-        position="bottom-right"
-        className="opacity-0"
-      />
     </div>
   );
 }
