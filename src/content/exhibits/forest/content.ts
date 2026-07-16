@@ -96,9 +96,9 @@ export const forestTrackChallenge: TrackChallenge = {
 
 export const forestCopy = {
   swipeHint: "Swipe left or right to explore other forest giants",
-  compareTitle: "Compare",
-  compareLead: "Place two forest dwellers side by side.",
-  compareMode: "Compare mode",
+  compareTitle: "Compare size",
+  compareLead: "Choose two animals. See them side by side with a human for scale.",
+  compareMode: "Compare size",
   tracksTitle: "Who Left This Track?",
   tracksLead: "Read the clue, then choose who passed this way.",
   callLabel: "Hear a call",

@@ -84,6 +84,9 @@ export function ForestExhibit() {
             onSelect={selectIndex}
             onCompare={() => {
               noteInteraction();
+              const current = forestAnimals[index]?.animalId ?? "moose";
+              setCompareLeft(current);
+              setCompareRight(current === "canada-lynx" ? "moose" : "canada-lynx");
               setMode("compare");
             }}
           />

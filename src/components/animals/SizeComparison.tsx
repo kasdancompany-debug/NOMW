@@ -29,9 +29,18 @@ type SizeComparisonProps = {
   maxHeightPx?: number;
 };
 
+const FOREST_IDS = new Set([
+  "moose",
+  "black-bear",
+  "grey-wolf",
+  "woodland-caribou",
+  "white-tailed-deer",
+  "canada-lynx",
+]);
+
 /**
  * Relative silhouette stage for communicating real-world scale.
- * Heights are visual ratios — not verified metric claims.
+ * Always keeps figures on one shared baseline — tallest first left-to-right after sort.
  */
 export function SizeComparison({
   subjects,
@@ -45,52 +54,61 @@ export function SizeComparison({
   return (
     <div className={cn("w-full", className)}>
       <div
-        className="relative flex items-end justify-center gap-[var(--space-8)] border-b border-[var(--glass-border)] px-[var(--space-4)] pb-0"
-        style={{ minHeight: maxHeightPx + 56 }}
+        className="relative flex items-end justify-center gap-[var(--space-6)] border-b border-white/10 px-[var(--space-3)] pb-0"
+        style={{ minHeight: maxHeightPx + 48 }}
       >
         {ordered.map((subject, index) => {
-          const height = Math.max(56, subject.relativeHeight * maxHeightPx);
+          const height = Math.max(48, subject.relativeHeight * maxHeightPx);
           const isHuman = subject.variant === "human";
           const kind: SilhouetteKind = isHuman
             ? "human"
             : silhouetteKindFromAnimalId(subject.id);
+          const useCutout = !isHuman && FOREST_IDS.has(subject.id);
+
           return (
             <motion.div
               key={subject.id}
               className="flex flex-col items-center gap-[var(--space-3)]"
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              initial={reducedMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 ...scenicTransition(reducedMotion),
-                delay: reducedMotion ? 0 : index * 0.05,
+                delay: reducedMotion ? 0 : index * 0.04,
               }}
             >
               <div
-                className="flex items-end justify-center drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
-                style={{ height, width: Math.max(48, height * 0.7) }}
+                className="flex items-end justify-center"
+                style={{ height, width: Math.max(40, height * 0.65) }}
                 aria-hidden
               >
-                {!isHuman &&
-                ["moose", "black-bear", "grey-wolf", "woodland-caribou", "white-tailed-deer", "canada-lynx"].includes(
-                  subject.id,
-                ) ? (
+                {useCutout ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={forestSilhouetteSrc(subject.id)}
                     alt=""
-                    className="max-h-full w-auto object-contain object-bottom opacity-90 brightness-0 invert"
+                    className="max-h-full w-auto object-contain object-bottom"
+                    style={{
+                      filter:
+                        "brightness(0) invert(1) drop-shadow(0 8px 16px rgba(0,0,0,0.4))",
+                    }}
                     draggable={false}
                   />
                 ) : (
-                  <AnimalSilhouette kind={kind} prominent={!isHuman} className="max-h-full" />
+                  <AnimalSilhouette
+                    kind={kind}
+                    compact
+                    prominent={!isHuman}
+                    className={cn(
+                      "max-h-full",
+                      isHuman ? "text-white/55" : "text-white/90",
+                    )}
+                  />
                 )}
               </div>
               <p
                 className={cn(
-                  "max-w-[7.5rem] text-center text-[length:var(--text-label)]",
-                  isHuman
-                    ? "text-[var(--text-on-dark-muted)]"
-                    : "text-[var(--color-museum-warm)]",
+                  "max-w-[7rem] text-center text-[12px] leading-snug",
+                  isHuman ? "text-white/45" : "text-[var(--color-museum-warm)]",
                 )}
               >
                 {subject.label}
@@ -100,14 +118,8 @@ export function SizeComparison({
         })}
       </div>
       {note ? (
-        <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-          {note}
-        </p>
-      ) : (
-        <p className="mt-[var(--space-3)] text-[10px] tracking-[0.12em] text-[rgba(212,176,122,0.65)] uppercase">
-          Placeholder silhouettes · scaled for comparison only
-        </p>
-      )}
+        <p className="mt-[var(--space-3)] text-[13px] leading-relaxed text-white/45">{note}</p>
+      ) : null}
     </div>
   );
 }
