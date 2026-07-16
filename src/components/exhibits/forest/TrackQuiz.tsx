@@ -35,7 +35,7 @@ export function TrackQuiz({ onClose }: TrackQuizProps) {
 
   return (
     <motion.div
-      className="absolute inset-0 z-30 bg-[rgba(6,16,24,0.75)]"
+      className="absolute inset-0 z-[55] bg-[#06100e]"
       initial={reducedMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
