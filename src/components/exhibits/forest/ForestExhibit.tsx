@@ -119,9 +119,11 @@ export function ForestExhibit() {
 
         <Touchable
           soft
-          className="flex h-12 w-full items-center justify-center gap-[var(--space-3)] bg-[var(--color-museum-warm)] text-[12px] font-semibold tracking-[0.2em] text-[#1a2430] uppercase"
+          className="relative z-50 flex h-12 w-full shrink-0 items-center justify-center gap-[var(--space-3)] bg-[var(--color-museum-warm)] text-[12px] font-semibold tracking-[0.2em] text-[#1a2430] uppercase"
           onClick={() => {
             noteInteraction();
+            closeProfile();
+            setMode("explore");
             softReset("home-control");
           }}
         >

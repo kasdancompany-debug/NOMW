@@ -313,7 +313,14 @@ export function ExhibitShell({
                 </div>
               </div>
 
-              <div className="pointer-events-auto flex items-end justify-between gap-[var(--space-4)]">
+              <div
+                className={cn(
+                  "flex items-end justify-between gap-[var(--space-4)]",
+                  // Only capture pointers when bottom chrome has real controls —
+                  // an empty pointer-events-auto strip blocks exhibit home bars.
+                  (showTitle || showProgress) && "pointer-events-auto",
+                )}
+              >
                 {showTitle ? (
                   <p className="max-w-[36ch] text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
                     {config.subtitle}
