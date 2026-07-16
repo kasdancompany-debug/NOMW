@@ -133,17 +133,17 @@ export function ForestHeroStage({
           >
             <h2
               className={cn(
-                "font-[family-name:var(--font-ui)] text-[clamp(2rem,3.8vw,3.25rem)]",
-                "font-bold leading-[1.02] tracking-[0.08em] text-white uppercase",
-                "[text-shadow:0_2px_24px_rgba(0,0,0,0.5)]",
+                "font-[family-name:var(--font-display)] text-[clamp(2.5rem,4.5vw,4rem)]",
+                "font-medium leading-[1.02] tracking-[-0.025em] text-white",
+                "[text-shadow:0_2px_28px_rgba(0,0,0,0.45)]",
               )}
             >
               {animal.commonName}
             </h2>
-            <p className="mt-[var(--space-2)] font-[family-name:var(--font-body)] text-[length:var(--text-body)] text-[var(--color-museum-warm)] italic">
+            <p className="mt-[var(--space-2)] font-[family-name:var(--font-body)] text-[length:var(--text-body)] italic tracking-[0.01em] text-[var(--color-museum-warm)]">
               {animal.scientificName}
             </p>
-            <p className="mt-[var(--space-4)] max-w-[38ch] text-[length:var(--text-body-sm)] leading-[1.7] text-white/85">
+            <p className="mt-[var(--space-4)] max-w-[38ch] font-[family-name:var(--font-body)] text-[length:var(--text-body-sm)] leading-[1.7] text-white/85">
               {animal.shortIntroduction}
             </p>
           </motion.div>

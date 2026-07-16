@@ -68,10 +68,10 @@
   --leading-body: 1.55;
   --leading-tight: 1.25;
 
-  --tracking-display: -0.02em;
-  --tracking-title: -0.01em;
-  --tracking-label: 0.18em;
-  --tracking-wide: 0.28em;
+  --tracking-display: -0.025em;
+  --tracking-title: -0.015em;
+  --tracking-label: 0.14em;
+  --tracking-wide: 0.2em;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;

@@ -5,15 +5,15 @@ import "@/content/database";
 import "@/styles/globals.css";
 
 /**
- * Vendored woff2 files — no Google Fonts / CDN at build or runtime.
- * System stacks remain in tokens.css if a file fails to load.
+ * Vendored woff2 — Fraunces (editorial display) + Commissioner (UI/body).
+ * No Google Fonts / CDN at runtime.
  */
 const display = localFont({
   src: [
-    { path: "../assets/fonts/CormorantGaramond-400.woff2", weight: "400", style: "normal" },
-    { path: "../assets/fonts/CormorantGaramond-500.woff2", weight: "500", style: "normal" },
-    { path: "../assets/fonts/CormorantGaramond-600.woff2", weight: "600", style: "normal" },
-    { path: "../assets/fonts/CormorantGaramond-700.woff2", weight: "700", style: "normal" },
+    { path: "../assets/fonts/Fraunces-400.woff2", weight: "400", style: "normal" },
+    { path: "../assets/fonts/Fraunces-500.woff2", weight: "500", style: "normal" },
+    { path: "../assets/fonts/Fraunces-600.woff2", weight: "600", style: "normal" },
+    { path: "../assets/fonts/Fraunces-700.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-museum-display",
   display: "swap",
@@ -23,13 +23,13 @@ const display = localFont({
 
 const body = localFont({
   src: [
-    { path: "../assets/fonts/SourceSans3-400.woff2", weight: "400", style: "normal" },
-    { path: "../assets/fonts/SourceSans3-500.woff2", weight: "500", style: "normal" },
-    { path: "../assets/fonts/SourceSans3-600.woff2", weight: "600", style: "normal" },
+    { path: "../assets/fonts/Commissioner-400.woff2", weight: "400", style: "normal" },
+    { path: "../assets/fonts/Commissioner-500.woff2", weight: "500", style: "normal" },
+    { path: "../assets/fonts/Commissioner-600.woff2", weight: "600", style: "normal" },
   ],
   variable: "--font-museum-body",
   display: "swap",
-  fallback: ["Avenir Next", "Segoe UI", "Helvetica Neue", "Arial", "sans-serif"],
+  fallback: ["Avenir Next", "Segoe UI", "Helvetica Neue", "sans-serif"],
   adjustFontFallback: "Arial",
 });
 

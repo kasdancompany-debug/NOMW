@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getAnimal } from "@/content/animals";
 import { getHabitat } from "@/content/habitats";
+import { forestCallAudioFor } from "@/content/exhibits/forest/calls";
+import {
+  forestPortraitAsset,
+  hasForestPortrait,
+} from "@/content/exhibits/forest/portraits";
 import {
   formatConservationStatus,
   formatSeasonList,
@@ -14,21 +19,17 @@ import { AnimalNameplate } from "@/components/animals/AnimalNameplate";
 import { AnimalProfileCallButton } from "@/components/animals/AnimalProfileCallButton";
 import { SizeComparison, humanSizeSubject } from "@/components/animals/SizeComparison";
 import { LocalImage } from "@/components/media/LocalImage";
-import { LocalVideo } from "@/components/media/LocalVideo";
 import { LargeTouchButton } from "@/components/touch/LargeTouchButton";
 import { QuietButton } from "@/components/touch/QuietButton";
-import { GlassPanel } from "@/components/ui/GlassPanel";
 import { useKioskSession } from "@/hooks/useKioskSession";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { scenicTransition } from "@/lib/motion/tokens";
 import { getAnalytics } from "@/lib/analytics";
 import { useAnimalProfileStore } from "@/stores/animal-profile.store";
 import { useAudioStore } from "@/stores/audio.store";
-import { cn } from "@/utils/cn";
 
 /**
- * Shared full-screen animal profile overlay.
- * Opens over the current exhibit without navigation; closes on kiosk reset.
+ * Shared full-screen animal profile — editorial portrait spread over the exhibit.
  */
 export function AnimalProfileOverlay() {
   const reducedMotion = useReducedMotion();
@@ -86,16 +87,22 @@ export function AnimalProfileOverlay() {
       : facts;
   const visibleFacts = (facts.length ? facts : fallbackFacts).slice(0, learnMore ? 3 : 2);
 
-  const caption = animal?.captions[0] || animal?.heroImage.caption;
-  const attribution = animal?.attribution || animal?.heroImage.attribution;
-  const showVideo = Boolean(animal && !reducedMotion && animal.habitatVideo?.src);
+  const portrait =
+    animal && hasForestPortrait(animal.id)
+      ? forestPortraitAsset(animal.id, animal.commonName)
+      : animal?.heroImage;
+
+  const guestCaption =
+    portrait && !portrait.placeholder && !portrait.caption?.toLowerCase().includes("placeholder")
+      ? portrait.caption
+      : undefined;
 
   return (
     <AnimatePresence>
-      {isOpen && animal ? (
+      {isOpen && animal && portrait ? (
         <motion.div
           key={animal.id}
-          className="absolute inset-0 z-[60] flex items-stretch justify-center bg-[rgba(6,14,20,0.72)] p-[var(--space-4)]"
+          className="absolute inset-0 z-[60] flex items-stretch justify-center bg-[rgba(4,10,12,0.82)] p-[var(--space-5)] backdrop-blur-[6px]"
           role="dialog"
           aria-modal="true"
           aria-label={`${animal.commonName} profile`}
@@ -111,136 +118,104 @@ export function AnimalProfileOverlay() {
           }}
         >
           <motion.div
-            className="safe-frame flex h-full w-full max-w-[110rem] flex-col"
-            initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+            className="flex h-full w-full max-w-[108rem] overflow-hidden rounded-[var(--radius-md)] border border-white/[0.08] bg-[rgba(8,14,16,0.92)] shadow-[0_40px_100px_rgba(0,0,0,0.55)]"
+            initial={reducedMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
+            exit={{ opacity: 0, y: 10 }}
             transition={scenicTransition(reducedMotion)}
           >
-            <GlassPanel
-              density="dense"
-              className="flex min-h-0 flex-1 flex-col gap-[var(--space-4)] overflow-hidden py-[var(--space-5)]"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-[var(--space-4)]">
-                <AnimalNameplate
-                  commonName={animal.commonName}
-                  scientificName={animal.scientificName}
+            <div className="grid min-h-0 flex-1 lg:grid-cols-[1.2fr_1fr]">
+              {/* Portrait plane */}
+              <div className="relative min-h-[16rem] overflow-hidden bg-[#0a1210] lg:min-h-0">
+                <LocalImage
+                  key={portrait.src}
+                  asset={portrait}
+                  alt={portrait.alt ?? animal.commonName}
+                  className="absolute inset-0"
+                  imgClassName="absolute inset-0 h-full w-full object-cover"
+                  fill
+                  priority
+                  sizes="(max-width: 1920px) 55vw, 1100px"
+                  showCaption={false}
+                  showAttribution={false}
                 />
-                <div className="flex flex-wrap gap-[var(--space-2)]">
-                  {animalIds.length > 1 ? (
-                    <>
-                      <LargeTouchButton
-                        variant="secondary"
-                        onClick={() => {
-                          noteInteraction();
-                          showPrevious();
-                        }}
-                      >
-                        Previous
-                      </LargeTouchButton>
-                      <LargeTouchButton
-                        variant="secondary"
-                        onClick={() => {
-                          noteInteraction();
-                          showNext();
-                        }}
-                      >
-                        Next
-                      </LargeTouchButton>
-                    </>
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent_55%,rgba(8,14,16,0.55)_100%)]" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(8,14,16,0.75))] p-[var(--space-6)]">
+                  {guestCaption ? (
+                    <p className="font-[family-name:var(--font-body)] text-[13px] tracking-[0.04em] text-white/70">
+                      {guestCaption}
+                    </p>
                   ) : null}
-                  {enableCompare ? (
-                    <LargeTouchButton
-                      variant="secondary"
-                      onClick={() => {
-                        noteInteraction();
-                        requestCompare();
-                      }}
-                    >
-                      Compare
-                    </LargeTouchButton>
-                  ) : null}
-                  <LargeTouchButton
-                    onClick={() => {
-                      noteInteraction();
-                      closeProfile();
-                    }}
-                  >
-                    Close
-                  </LargeTouchButton>
                 </div>
               </div>
 
-              <div className="grid min-h-0 flex-1 gap-[var(--space-5)] overflow-y-auto lg:grid-cols-[1.15fr_1fr]">
-                <div className="space-y-[var(--space-3)]">
-                  <div className="relative min-h-[18rem] overflow-hidden rounded-[var(--radius-sm)] bg-[rgba(255,255,255,0.06)] lg:min-h-[24rem]">
-                    {showVideo ? (
-                      <LocalVideo
-                        key={animal.habitatVideo.src}
-                        asset={animal.habitatVideo}
-                        poster={animal.habitatVideo.poster ?? animal.heroImage.src}
-                        fallbackSrc={animal.heroImage.src}
-                        caption={caption}
-                        attribution={attribution}
-                        className="absolute inset-0"
-                        videoClassName="absolute inset-0 h-full w-full object-cover"
-                        loop={animal.habitatVideo.loop ?? true}
-                        autoPlay
-                        muted
-                        preload={animal.habitatVideo.preload ?? "metadata"}
-                        lazy
-                        playWhenVisible
-                        showCaption={false}
-                        showAttribution={false}
-                      />
-                    ) : (
-                      <LocalImage
-                        key={animal.heroImage.src}
-                        asset={animal.heroImage}
-                        alt={animal.heroImage.alt ?? animal.commonName}
-                        fallbackSrc={animal.silhouetteImage.src}
-                        className="absolute inset-0"
-                        imgClassName="absolute inset-0 h-full w-full object-cover"
-                        fill
-                        sizes="(max-width: 1920px) 50vw, 960px"
-                        showCaption={false}
-                        showAttribution={false}
-                      />
-                    )}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(8,16,22,0.85))] p-[var(--space-4)]">
-                      {caption ? (
-                        <p className="text-[length:var(--text-body-sm)] text-[var(--text-on-dark)]">
-                          {caption}
-                        </p>
-                      ) : null}
-                      {attribution ? (
-                        <p className="mt-[var(--space-1)] text-[length:var(--text-micro)] text-[var(--text-on-dark-muted)]">
-                          {attribution}
-                        </p>
-                      ) : null}
-                    </div>
+              {/* Editorial column */}
+              <div className="flex min-h-0 flex-col overflow-hidden px-[var(--space-6)] py-[var(--space-5)] xl:px-[var(--space-8)]">
+                <div className="flex items-start justify-between gap-[var(--space-4)]">
+                  <AnimalNameplate
+                    commonName={animal.commonName}
+                    scientificName={animal.scientificName}
+                    className="max-w-[28rem]"
+                  />
+                  <div className="flex shrink-0 flex-wrap justify-end gap-[var(--space-2)]">
+                    {animalIds.length > 1 ? (
+                      <>
+                        <QuietButton
+                          onClick={() => {
+                            noteInteraction();
+                            showPrevious();
+                          }}
+                        >
+                          Previous
+                        </QuietButton>
+                        <QuietButton
+                          onClick={() => {
+                            noteInteraction();
+                            showNext();
+                          }}
+                        >
+                          Next
+                        </QuietButton>
+                      </>
+                    ) : null}
+                    {enableCompare ? (
+                      <QuietButton
+                        onClick={() => {
+                          noteInteraction();
+                          requestCompare();
+                        }}
+                      >
+                        Compare
+                      </QuietButton>
+                    ) : null}
+                    <LargeTouchButton
+                      onClick={() => {
+                        noteInteraction();
+                        closeProfile();
+                      }}
+                    >
+                      Close
+                    </LargeTouchButton>
                   </div>
-
-                  <AnimalProfileCallButton animal={animal} />
                 </div>
 
-                <div className="space-y-[var(--space-4)]">
-                  <p className="text-[length:var(--text-body)] leading-[var(--leading-body)] text-[var(--text-on-dark)]">
+                <div className="mt-[var(--space-5)] min-h-0 flex-1 space-y-[var(--space-6)] overflow-y-auto pr-1">
+                  <p className="max-w-[42ch] font-[family-name:var(--font-body)] text-[length:var(--text-lead)] leading-[1.55] text-white/88">
                     {animal.shortIntroduction}
                   </p>
 
-                  <dl className="grid grid-cols-1 gap-[var(--space-3)] sm:grid-cols-2">
+                  <dl className="grid grid-cols-1 gap-x-[var(--space-6)] gap-y-[var(--space-4)] border-y border-white/[0.08] py-[var(--space-5)] sm:grid-cols-2">
                     <MetaItem label="Habitat" value={habitats || "Northern Ontario landscapes"} />
                     <MetaItem
                       label="Diet"
                       value={
                         animal.diet.status === "placeholder"
-                          ? "Diet details under curator review"
+                          ? "Seasonal omnivore — details under curator review"
                           : animal.diet.text
                       }
                     />
-                    <MetaItem label="Active season" value={formatSeasonList(animal.activeSeasons)} />
-                    <MetaItem label="Active time" value={formatTimeList(animal.activeTimeOfDay)} />
+                    <MetaItem label="Season" value={formatSeasonList(animal.activeSeasons)} />
+                    <MetaItem label="Active" value={formatTimeList(animal.activeTimeOfDay)} />
                     <MetaItem
                       label="Conservation"
                       value={formatConservationStatus(animal.conservationStatus)}
@@ -249,15 +224,15 @@ export function AnimalProfileOverlay() {
                       label="Size"
                       value={
                         animal.averageLength.status === "placeholder"
-                          ? "Relative size below"
+                          ? "See relative scale"
                           : animal.averageLength.display
                       }
                     />
                   </dl>
 
                   <SizeComparison
-                    maxHeightPx={120}
-                    note="Relative silhouette — not a verified measurement"
+                    maxHeightPx={110}
+                    note="Relative silhouettes for feeling scale — not certified measures"
                     subjects={[
                       {
                         id: animal.id,
@@ -268,21 +243,23 @@ export function AnimalProfileOverlay() {
                     ]}
                   />
 
-                  <div>
-                    <p className="text-[length:var(--text-label)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">
-                      Memorable facts
-                    </p>
-                    <ul className="mt-[var(--space-3)] space-y-[var(--space-3)]">
-                      {visibleFacts.map((fact) => (
-                        <li
-                          key={fact}
-                          className="border-l border-[var(--color-aurora-teal)]/45 pl-[var(--space-4)] text-[length:var(--text-body)] text-[var(--text-on-dark)]"
-                        >
-                          {fact}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  {visibleFacts.length ? (
+                    <div>
+                      <p className="font-[family-name:var(--font-ui)] text-[11px] tracking-[0.2em] text-[var(--color-museum-warm)] uppercase">
+                        Memorable facts
+                      </p>
+                      <ul className="mt-[var(--space-4)] space-y-[var(--space-4)]">
+                        {visibleFacts.map((fact) => (
+                          <li
+                            key={fact}
+                            className="border-l border-[var(--color-aurora-teal)]/40 pl-[var(--space-4)] font-[family-name:var(--font-body)] text-[length:var(--text-body)] leading-[1.6] text-white/85"
+                          >
+                            {fact}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
 
                   <QuietButton
                     className="no-underline px-0"
@@ -295,7 +272,7 @@ export function AnimalProfileOverlay() {
                       });
                     }}
                   >
-                    {learnMore ? "Show less" : "Learn more"}
+                    {learnMore ? "Show less" : "Read more"}
                   </QuietButton>
 
                   <AnimatePresence initial={false}>
@@ -307,26 +284,28 @@ export function AnimalProfileOverlay() {
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-[var(--space-3)] overflow-hidden"
                       >
-                        <p className="text-[length:var(--text-body-sm)] leading-[var(--leading-body)] text-[var(--text-on-dark-muted)]">
+                        <p className="max-w-[46ch] text-[length:var(--text-body-sm)] leading-[1.7] text-white/70">
                           {animal.fullDescription}
                         </p>
-                        <p className="text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-                          Range:{" "}
-                          {animal.northernOntarioRange.status === "placeholder"
-                            ? "Regional range under review"
-                            : animal.northernOntarioRange.text}
-                        </p>
-                        {animal.adaptationFacts[0] ? (
-                          <p className="text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-                            Adaptation: {animal.adaptationFacts[0].text}
+                        {animal.adaptationFacts[0] &&
+                        !animal.adaptationFacts[0].text.includes("[NEEDS RESEARCH]") ? (
+                          <p className="max-w-[46ch] text-[length:var(--text-body-sm)] leading-[1.7] text-white/60">
+                            {animal.adaptationFacts[0].text}
                           </p>
                         ) : null}
                       </motion.div>
                     ) : null}
                   </AnimatePresence>
                 </div>
+
+                <div className="mt-[var(--space-4)] border-t border-white/[0.08] pt-[var(--space-4)]">
+                  <AnimalProfileCallButton
+                    animal={animal}
+                    callOverride={forestCallAudioFor(animal.id)}
+                  />
+                </div>
               </div>
-            </GlassPanel>
+            </div>
           </motion.div>
         </motion.div>
       ) : null}
@@ -336,11 +315,11 @@ export function AnimalProfileOverlay() {
 
 function MetaItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className={cn("rounded-[var(--radius-sm)] bg-white/5 px-[var(--space-3)] py-[var(--space-3)]")}>
-      <dt className="text-[length:var(--text-micro)] tracking-[var(--tracking-label)] text-[var(--text-on-dark-muted)] uppercase">
+    <div>
+      <dt className="font-[family-name:var(--font-ui)] text-[10px] tracking-[0.18em] text-white/45 uppercase">
         {label}
       </dt>
-      <dd className="mt-[var(--space-1)] text-[length:var(--text-body-sm)] text-[var(--text-on-dark)]">
+      <dd className="mt-[var(--space-2)] font-[family-name:var(--font-body)] text-[14px] leading-snug text-white/88">
         {value}
       </dd>
     </div>

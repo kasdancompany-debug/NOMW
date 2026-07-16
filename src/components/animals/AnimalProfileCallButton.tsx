@@ -1,6 +1,6 @@
 "use client";
 
-import type { Animal } from "@/types/content";
+import type { Animal, MediaAsset } from "@/types/content";
 import { PlayingIndicator } from "@/components/audio/ListenControl";
 import { LargeTouchButton } from "@/components/touch/LargeTouchButton";
 import { useLocalAudio } from "@/hooks/useLocalAudio";
@@ -10,21 +10,26 @@ import { useAudioStore } from "@/stores/audio.store";
 
 type AnimalProfileCallButtonProps = {
   animal: Animal;
+  /** Prefer a wired call asset when available (e.g. forest public-domain cuts). */
+  callOverride?: MediaAsset;
 };
 
 /**
  * Optional Listen for a profile call through the station audio manager.
- * Pauses exhibit ambient while the call plays.
  */
-export function AnimalProfileCallButton({ animal }: AnimalProfileCallButtonProps) {
+export function AnimalProfileCallButton({
+  animal,
+  callOverride,
+}: AnimalProfileCallButtonProps) {
+  const call = callOverride ?? animal.callAudio;
   const { noteInteraction, updateSettings } = useKioskSession();
   const muted = useAudioStore((s) => s.muted);
   const { play, stop, missing, playing } = useLocalAudio({
     id: `profile-call-${animal.id}`,
-    src: animal.callAudio.src,
+    src: call.src,
     role: "call",
-    volume: animal.callAudio.volume ?? MUSEUM_AUDIO.callVolume,
-    preload: animal.callAudio.preload ?? "none",
+    volume: call.volume ?? MUSEUM_AUDIO.callVolume,
+    preload: call.preload ?? "none",
     unmuteOnPlay: true,
   });
 
@@ -44,13 +49,11 @@ export function AnimalProfileCallButton({ animal }: AnimalProfileCallButtonProps
           play();
         }}
       >
-        {missing
-          ? "Call audio arrives with final media"
-          : playing
-            ? "Playing call…"
-            : "Listen"}
+        {missing ? "Call recording coming soon" : playing ? "Playing…" : "Hear a call"}
       </LargeTouchButton>
-      <PlayingIndicator active={playing} muted={muted && !playing} />
+      {!missing ? (
+        <PlayingIndicator active={playing} muted={muted && !playing} />
+      ) : null}
     </div>
   );
 }

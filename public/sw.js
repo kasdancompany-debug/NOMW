@@ -12,7 +12,7 @@
  * No CDN URLs — same-origin only.
  */
 
-const VERSION = "nomow-offline-v3";
+const VERSION = "nomow-offline-v4";
 const SHELL_CACHE = `${VERSION}-shell`;
 const MEDIA_CACHE = `${VERSION}-media`;
 const STATIC_CACHE = `${VERSION}-static`;

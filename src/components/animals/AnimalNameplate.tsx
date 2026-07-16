@@ -7,7 +7,7 @@ type AnimalNameplateProps = {
 };
 
 /**
- * Species identity lockup — editorial, not a sticker or badge overlay aesthetic.
+ * Species identity lockup — editorial display + quiet scientific line.
  */
 export function AnimalNameplate({
   commonName,
@@ -15,11 +15,11 @@ export function AnimalNameplate({
   className,
 }: AnimalNameplateProps) {
   return (
-    <div className={cn("max-w-[24rem]", className)}>
+    <div className={cn("max-w-[28rem]", className)}>
       <p
         className={cn(
-          "font-[family-name:var(--font-display)] text-[length:var(--text-title)]",
-          "leading-[var(--leading-title)] tracking-[var(--tracking-title)]",
+          "font-[family-name:var(--font-display)] text-[clamp(2rem,3.2vw,3rem)]",
+          "font-medium leading-[1.05] tracking-[-0.02em]",
           "text-[var(--text-on-dark)]",
         )}
       >
@@ -28,8 +28,8 @@ export function AnimalNameplate({
       {scientificName ? (
         <p
           className={cn(
-            "mt-[var(--space-2)] font-[family-name:var(--font-body)] italic",
-            "text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]",
+            "mt-[var(--space-2)] font-[family-name:var(--font-body)] text-[15px]",
+            "italic tracking-[0.01em] text-[var(--color-museum-warm)]/90",
           )}
         >
           {scientificName}
