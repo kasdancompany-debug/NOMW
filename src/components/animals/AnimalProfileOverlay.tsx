@@ -18,6 +18,7 @@ import {
 import { AnimalNameplate } from "@/components/animals/AnimalNameplate";
 import { AnimalProfileCallButton } from "@/components/animals/AnimalProfileCallButton";
 import { SizeComparison, humanSizeSubject } from "@/components/animals/SizeComparison";
+import { MediaFallback } from "@/components/media/MediaFallback";
 import { LargeTouchButton } from "@/components/touch/LargeTouchButton";
 import { QuietButton } from "@/components/touch/QuietButton";
 import { useKioskSession } from "@/hooks/useKioskSession";
@@ -45,6 +46,7 @@ export function AnimalProfileOverlay() {
   const requestCompare = useAnimalProfileStore((s) => s.requestCompare);
 
   const [learnMore, setLearnMore] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
 
   const animal = animalId ? getAnimal(animalId) : undefined;
 
@@ -57,6 +59,7 @@ export function AnimalProfileOverlay() {
 
   useEffect(() => {
     setLearnMore(false);
+    setImageFailed(false);
   }, [animalId]);
 
   useEffect(() => {
@@ -126,15 +129,22 @@ export function AnimalProfileOverlay() {
             <div className="grid min-h-0 flex-1 lg:grid-cols-[1.2fr_1fr]">
               {/* Portrait plane */}
               <div className="relative min-h-[16rem] overflow-hidden bg-[#0a1210] lg:min-h-0">
-                {/* Native img — avoid next/image fill edge cases on kiosk overlay */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  key={portrait.src}
-                  src={portrait.src}
-                  alt={portrait.alt ?? animal.commonName}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  draggable={false}
-                />
+                {imageFailed ? (
+                  <MediaFallback className="absolute inset-0" />
+                ) : (
+                  <>
+                    {/* Native img — avoid next/image fill edge cases on kiosk overlay */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      key={portrait.src}
+                      src={portrait.src}
+                      alt={portrait.alt ?? animal.commonName}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      draggable={false}
+                      onError={() => setImageFailed(true)}
+                    />
+                  </>
+                )}
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent_55%,rgba(8,14,16,0.55)_100%)]" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(8,14,16,0.75))] p-[var(--space-6)]">
                   {guestCaption ? (

@@ -52,7 +52,10 @@ export function ScenarioPlayer({
 
   return (
     <div className="grid min-h-0 flex-1 gap-[var(--space-6)] lg:grid-cols-[1.05fr_0.95fr]">
-      <GlassPanel density="dense" className="flex flex-col gap-[var(--space-4)]">
+      <GlassPanel
+        density="dense"
+        className="flex min-h-0 flex-col gap-[var(--space-4)] overflow-y-auto"
+      >
         <p className="text-[length:var(--text-label)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">
           {topicLabels[scenario.topic]}
         </p>
@@ -134,7 +137,7 @@ export function ScenarioPlayer({
         </div>
       </GlassPanel>
 
-      <div className="flex min-h-0 flex-col gap-[var(--space-4)]">
+      <div className="flex min-h-0 flex-col gap-[var(--space-4)] overflow-y-auto pr-1">
         <AnimatePresence mode="wait">
           {answered ? (
             <motion.div

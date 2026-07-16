@@ -74,7 +74,7 @@ export function SeasonsExhibit() {
             </p>
           </div>
 
-          <div className="pointer-events-auto">
+          <div className="pointer-events-auto pt-[4.25rem]">
             <HabitatNotes season={season} />
           </div>
         </header>

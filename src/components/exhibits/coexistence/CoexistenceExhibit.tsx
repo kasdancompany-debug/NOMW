@@ -5,7 +5,7 @@ import {
   COEXISTENCE_EXHIBIT_SUBTITLE,
   COEXISTENCE_EXHIBIT_TITLE,
   coexistenceCopy,
-  coexistenceScenarios,
+  floorReadyCoexistenceScenarios,
   type ScenarioChoice,
 } from "@/content/exhibits/coexistence/content";
 import { SafetyDisclaimer } from "@/components/exhibits/coexistence/SafetyDisclaimer";
@@ -29,7 +29,8 @@ export function CoexistenceExhibit() {
 
   useEffect(() => registerResetHandler(resetCoexistence), [registerResetHandler, resetCoexistence]);
 
-  const scenario = coexistenceScenarios[index] ?? coexistenceScenarios[0]!;
+  const scenario =
+    floorReadyCoexistenceScenarios[index] ?? floorReadyCoexistenceScenarios[0]!;
 
   useEffect(() => {
     getAnalytics().track("challenge_started", {
@@ -40,7 +41,7 @@ export function CoexistenceExhibit() {
   const goNext = () => {
     noteInteraction();
     setSelectedChoiceId(null);
-    setIndex((current) => (current + 1) % coexistenceScenarios.length);
+    setIndex((current) => (current + 1) % floorReadyCoexistenceScenarios.length);
   };
 
   return (
@@ -60,7 +61,7 @@ export function CoexistenceExhibit() {
               {COEXISTENCE_EXHIBIT_SUBTITLE}
             </p>
           </div>
-          <SafetyDisclaimer />
+          <SafetyDisclaimer className="mt-[4.25rem]" />
         </header>
 
         <div className="mt-[var(--space-4)] flex min-h-0 flex-1 flex-col">
@@ -82,10 +83,11 @@ export function CoexistenceExhibit() {
 
         <footer className="flex flex-wrap items-center justify-between gap-[var(--space-4)] pt-[var(--space-3)] pb-[var(--space-2)]">
           <p className="text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-            {coexistenceCopy.progressLabel} {index + 1} / {coexistenceScenarios.length}
+            {coexistenceCopy.progressLabel} {index + 1} /{" "}
+            {floorReadyCoexistenceScenarios.length}
           </p>
           <ProgressDots
-            count={coexistenceScenarios.length}
+            count={floorReadyCoexistenceScenarios.length}
             activeIndex={index}
             onSelect={(next) => {
               noteInteraction();

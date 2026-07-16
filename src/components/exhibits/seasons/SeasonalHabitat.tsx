@@ -71,11 +71,36 @@ export function SeasonalHabitat({ season, className, children }: SeasonalHabitat
               preserveAspectRatio="none"
               aria-hidden
             >
-              <path
-                fill={layer.midground}
-                d="M0 700 V280 L70 700ZM100 700 L180 160 L260 700ZM300 700 L370 220 L460 700ZM500 700 L590 120 L680 700ZM740 700 L820 200 L920 700ZM980 700 L1080 140 L1180 700ZM1240 700 L1340 210 L1440 700ZM1500 700 L1600 150 L1700 700ZM1760 700 L1840 260 L1920 700Z"
-                opacity="0.85"
-              />
+              <defs>
+                <g id={`season-tree-${entry}`}>
+                  <path
+                    d="M48 0 C43 40 38 70 26 104 L42 98 C34 136 24 168 8 206 L38 194 C28 238 16 276 0 316 L43 296 L43 380 H55 V296 L98 316 C82 276 70 238 60 194 L90 206 C74 168 64 136 56 98 L72 104 C60 70 55 40 48 0 Z"
+                    fill={layer.midground}
+                  />
+                </g>
+              </defs>
+              {[
+                [0, 150, 1.35],
+                [150, 245, 1.0],
+                [280, 185, 1.22],
+                [440, 270, 0.9],
+                [560, 105, 1.48],
+                [760, 225, 1.08],
+                [900, 155, 1.3],
+                [1080, 255, 0.96],
+                [1210, 125, 1.42],
+                [1400, 205, 1.16],
+                [1560, 145, 1.34],
+                [1745, 250, 1.0],
+                [1845, 170, 1.25],
+              ].map(([x, y, scale], index) => (
+                <use
+                  key={index}
+                  href={`#season-tree-${entry}`}
+                  transform={`translate(${x} ${y}) scale(${scale})`}
+                  opacity="0.9"
+                />
+              ))}
             </svg>
 
             <div

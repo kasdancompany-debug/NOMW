@@ -39,7 +39,7 @@ export function ListenControl({
   volume = MUSEUM_AUDIO.callVolume,
   listenLabel = "Listen",
   playingLabel = "Playing…",
-  missingLabel = "Audio arrives with final media",
+  missingLabel = "Audio unavailable",
   volumeNote,
   className,
   hideIndicator = false,

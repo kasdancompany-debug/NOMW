@@ -28,7 +28,7 @@ export function NightFactPanel({ creature, onClose }: NightFactPanelProps) {
 
   return (
     <motion.div
-      className="pointer-events-auto absolute top-[var(--space-6)] right-[var(--space-6)] z-40 w-[min(26rem,40vw)]"
+      className="pointer-events-auto absolute top-[6rem] right-[var(--space-6)] z-40 w-[min(26rem,40vw)]"
       initial={reducedMotion ? false : { opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 8 }}

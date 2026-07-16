@@ -16,7 +16,6 @@ import { NightComplete } from "@/components/exhibits/night/NightComplete";
 import { NightCreatures, creatureUnderBeam } from "@/components/exhibits/night/NightCreatures";
 import { NightFactPanel } from "@/components/exhibits/night/NightFactPanel";
 import { NightForestStage } from "@/components/exhibits/night/NightForestStage";
-import { NightSoundToggle } from "@/components/exhibits/night/NightSoundToggle";
 import { QuietButton } from "@/components/touch/QuietButton";
 import { useKioskSession } from "@/hooks/useKioskSession";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -40,14 +39,9 @@ export function NightExhibit() {
   const [hasCompletedOnce, setHasCompletedOnce] = useState(false);
   const [listExplore, setListExplore] = useState(false);
 
-  const dwellRef = useRef<{ id: NightDiscoveryId | null; since: number }>({
-    id: null,
-    since: 0,
-  });
-
   const exploreByList = reducedMotion || listExplore;
 
-  const { point, handlers, reset: resetPointer } = useSmoothPointer(stageRef, {
+  const { point, active, handlers, reset: resetPointer } = useSmoothPointer(stageRef, {
     smoothing: 0.18,
     reducedMotion,
     initial: { x: 0.5, y: 0.58 },
@@ -60,33 +54,26 @@ export function NightExhibit() {
     setCompleteOpen(false);
     setHasCompletedOnce(false);
     setListExplore(false);
-    dwellRef.current = { id: null, since: 0 };
     resetPointer({ x: 0.5, y: 0.58 });
   }, [resetPointer]);
 
   useEffect(() => registerResetHandler(resetNight), [registerResetHandler, resetNight]);
 
+  const creatureInBeam = creatureUnderBeam(nightCreatures, point, BEAM_RADIUS);
+
   useEffect(() => {
-    const under = creatureUnderBeam(nightCreatures, point, BEAM_RADIUS);
-    const now = performance.now();
+    if (!creatureInBeam || exploreByList) return;
 
-    if (!under) {
-      dwellRef.current = { id: null, since: 0 };
-      return;
-    }
+    // Discovery must complete while the visitor holds the beam still. The old
+    // point-change check could never finish unless the pointer kept moving.
+    const timer = window.setTimeout(() => {
+      setDiscovered((prev) =>
+        prev.includes(creatureInBeam) ? prev : [...prev, creatureInBeam],
+      );
+    }, DISCOVER_DWELL_MS);
 
-    if (dwellRef.current.id !== under) {
-      dwellRef.current = { id: under, since: now };
-      return;
-    }
-
-    if (now - dwellRef.current.since < DISCOVER_DWELL_MS) return;
-
-    setDiscovered((prev) => {
-      if (prev.includes(under)) return prev;
-      return [...prev, under];
-    });
-  }, [point]);
+    return () => window.clearTimeout(timer);
+  }, [creatureInBeam, exploreByList]);
 
   useEffect(() => {
     if (discovered.length === 0) return;
@@ -114,6 +101,7 @@ export function NightExhibit() {
     <div className="relative h-full w-full overflow-hidden bg-[#05080f]">
       <div
         ref={stageRef}
+        data-testid="night-beam-stage"
         className="absolute inset-0 touch-none select-none"
         style={{ touchAction: "none" }}
         {...handlers}
@@ -131,6 +119,11 @@ export function NightExhibit() {
           nightVision={nightVision}
         />
         <FlashlightLayer x={point.x} y={point.y} nightVision={nightVision} radiusVmin={22} />
+        <div
+          className="pointer-events-none absolute z-[12] h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(238,230,210,0.65)] shadow-[0_0_18px_rgba(238,220,180,0.32)]"
+          style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
+          aria-hidden
+        />
       </div>
 
       <div className="pointer-events-none safe-frame relative z-20 flex h-full flex-col justify-between py-[var(--space-3)]">
@@ -145,12 +138,12 @@ export function NightExhibit() {
             <p className="mt-[var(--space-2)] text-[length:var(--text-lead)] text-[var(--text-on-dark-muted)]">
               {NIGHT_EXHIBIT_SUBTITLE}
             </p>
-            <p className="mt-[var(--space-3)] max-w-[36ch] text-[length:var(--text-body-sm)] text-[var(--text-on-dark)]">
+            <p className="mt-[var(--space-3)] max-w-[36ch] text-[length:var(--text-body-sm)] leading-relaxed text-white/72">
               {exploreByList ? nightCopy.hintTap : nightCopy.hint}
             </p>
           </div>
 
-          <div className="pointer-events-auto flex flex-col items-end gap-[var(--space-2)]">
+          <div className="pointer-events-auto flex flex-col items-end gap-[var(--space-2)] pt-[4.25rem]">
             <QuietButton
               className="no-underline"
               aria-pressed={exploreByList}
@@ -171,11 +164,15 @@ export function NightExhibit() {
             >
               {nightVision ? nightCopy.nightVisionOn : nightCopy.nightVisionOff}
             </QuietButton>
-            <NightSoundToggle />
           </div>
         </header>
 
         <footer className="pb-[var(--space-2)]">
+          {!active && discovered.length === 0 && !exploreByList ? (
+            <p className="mb-[var(--space-4)] font-[family-name:var(--font-ui)] text-[11px] tracking-[0.2em] text-white/55 uppercase">
+              Touch the forest and guide the light
+            </p>
+          ) : null}
           <DiscoveryTrail
             creatures={nightCreatures}
             discovered={discovered}

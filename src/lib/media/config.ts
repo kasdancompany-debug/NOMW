@@ -27,6 +27,6 @@ export const MEDIA_FALLBACK_DATA_URI =
         </linearGradient>
       </defs>
       <rect width="1600" height="900" fill="url(#g)"/>
-      <text x="80" y="820" fill="rgba(212,176,122,0.55)" font-family="Georgia, serif" font-size="36">Media arrives with final install</text>
+      <path d="M0 720 C220 620 380 700 560 590 C760 470 930 650 1120 540 C1300 440 1450 570 1600 500 V900 H0 Z" fill="rgba(5,16,20,0.45)"/>
     </svg>`,
   );

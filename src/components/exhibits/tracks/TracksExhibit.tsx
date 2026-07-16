@@ -59,7 +59,7 @@ export function TracksExhibit() {
             </p>
           </div>
 
-          <div className="flex flex-col items-end gap-[var(--space-2)]">
+          <div className="flex flex-col items-end gap-[var(--space-2)] pt-[4.25rem]">
             <p className="text-[length:var(--text-body)] text-[var(--text-on-dark)]">
               <span className="text-[var(--text-on-dark-muted)]">{tracksCopy.scoreLabel}: </span>
               {session.score.correct} / {session.score.attempted}

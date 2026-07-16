@@ -149,7 +149,7 @@ export function SkyExhibit() {
         {selectedAnimal && selectedBird && (mode === "panorama" || mode === "migration") ? (
           <motion.aside
             key={selectedAnimal.id}
-            className="absolute top-[var(--space-6)] right-[var(--space-6)] z-30 w-[min(28rem,38vw)] max-h-[calc(100%-3rem)] overflow-y-auto"
+            className="absolute top-[6rem] right-[var(--space-6)] z-30 max-h-[calc(100%-7.5rem)] w-[min(28rem,38vw)] overflow-y-auto"
             initial={reducedMotion ? false : { opacity: 0, x: 28, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 16, scale: 0.98 }}

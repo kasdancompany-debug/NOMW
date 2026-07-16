@@ -1,7 +1,7 @@
 "use client";
 
 import { animate, motion, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { getAnimal } from "@/content/animals";
 import { skyBirds, skyCopy } from "@/content/exhibits/sky/content";
 import { QuietButton } from "@/components/touch/QuietButton";
@@ -33,6 +33,17 @@ export function SkyPanorama({
   const reducedMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
+  const [viewportWidth, setViewportWidth] = useState(0);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const measure = () => setViewportWidth(viewport.clientWidth);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
 
   const maxTravel = useCallback(() => {
     const viewport = viewportRef.current;
@@ -70,14 +81,10 @@ export function SkyPanorama({
         className="relative h-full touch-none"
         style={{ width: `${PANORAMA_SCALE * 100}%`, x }}
         drag={reducedMotion ? false : "x"}
-        dragConstraints={
-          viewportRef.current
-            ? {
-                left: -(viewportRef.current.clientWidth * (PANORAMA_SCALE - 1)),
-                right: 0,
-              }
-            : { left: 0, right: 0 }
-        }
+        dragConstraints={{
+          left: -(viewportWidth * (PANORAMA_SCALE - 1)),
+          right: 0,
+        }}
         dragElastic={touchDrag.dragElastic}
         dragTransition={touchDrag.dragTransition}
       >
@@ -178,7 +185,7 @@ export function SkyPanorama({
         })}
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-[var(--space-4)] z-30 flex flex-col items-center gap-[var(--space-3)] px-[var(--space-4)]">
+      <div className="pointer-events-none absolute inset-x-0 bottom-[8.25rem] z-30 flex flex-col items-center gap-[var(--space-2)] px-[var(--space-4)]">
         <p className="rounded-sm bg-black/45 px-4 py-2 text-center text-[length:var(--text-body-sm)] text-[var(--text-on-dark)]">
           {reducedMotion ? skyCopy.panHintTap : skyCopy.swipeHint}
         </p>
@@ -198,7 +205,7 @@ export function SkyPanorama({
             {skyCopy.panRight}
           </QuietButton>
         </div>
-        <div className="pointer-events-auto flex max-w-4xl flex-wrap justify-center gap-[var(--space-2)]">
+        <div className="pointer-events-auto flex max-w-[calc(100vw-3rem)] flex-nowrap justify-start gap-[var(--space-2)] overflow-x-auto rounded-[var(--radius-sm)] bg-black/25 p-1.5 [scrollbar-width:none]">
           {skyBirds.map((bird) => {
             const animal = getAnimal(bird.animalId);
             if (!animal) return null;

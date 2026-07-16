@@ -118,9 +118,9 @@ export function WaterZoneRail({ activeZoneId, onSelect }: ZoneRailProps) {
           <Touchable
             key={zone.id}
             soft
-            glow={!active}
+            glow={active}
             className={cn(
-              "touch-pressable w-full justify-start rounded-[var(--radius-xs)] border px-[var(--space-3)] text-left text-[length:var(--text-label)] tracking-[var(--tracking-title)]",
+              "touch-pressable w-[11.5rem] justify-start rounded-[var(--radius-xs)] border px-[var(--space-3)] text-left text-[length:var(--text-label)] tracking-[var(--tracking-title)]",
               active
                 ? "border-[var(--color-aurora-teal)] bg-[rgba(94,184,168,0.18)] text-[var(--text-on-dark)]"
                 : "border-[var(--glass-border)] text-[var(--text-on-dark-muted)]",

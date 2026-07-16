@@ -109,6 +109,8 @@ export function StationProvider({ children }: { children: ReactNode }) {
     if (isSimulator) return;
     if (pathname.startsWith("/dev/")) return;
     if (searchParams.get("setup") === "1") return;
+    const requestedStation = searchParams.get(STATION_QUERY_PARAM);
+    if (requestedStation && isStationId(requestedStation)) return;
 
     const pathStation = parseStationFromPathname(pathname);
 

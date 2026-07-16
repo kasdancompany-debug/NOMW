@@ -96,7 +96,10 @@ export function ChallengeBoard({
 
   return (
     <div className="grid min-h-0 flex-1 gap-[var(--space-6)] lg:grid-cols-[1.05fr_0.95fr]">
-      <GlassPanel density="dense" className="flex flex-col gap-[var(--space-4)]">
+      <GlassPanel
+        density="dense"
+        className="flex min-h-0 flex-col gap-[var(--space-4)] overflow-y-auto"
+      >
         <p className="text-[length:var(--text-label)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">
           {challengeTypeLabels[challenge.type as TracksChallengeType]}
         </p>
@@ -115,7 +118,7 @@ export function ChallengeBoard({
         )}
       </GlassPanel>
 
-      <div className="flex min-h-0 flex-col gap-[var(--space-4)]">
+      <div className="flex min-h-0 flex-col gap-[var(--space-4)] overflow-y-auto pr-1">
         <div
           ref={dropRef}
           role="button"
@@ -128,6 +131,7 @@ export function ChallengeBoard({
           }}
           className={cn(
             "relative flex min-h-[10rem] flex-col items-center justify-center rounded-[var(--radius-sm)] border-2 border-dashed bg-[rgba(8,18,24,0.78)] p-[var(--space-6)] transition-colors",
+            answered && "hidden",
             draggingId || selectedId
               ? "border-[var(--color-museum-warm)]/70 bg-[rgba(212,176,122,0.08)]"
               : "border-white/20",
@@ -153,7 +157,12 @@ export function ChallengeBoard({
           ) : null}
         </div>
 
-        <div className="grid grid-cols-1 gap-[var(--space-3)] sm:grid-cols-3">
+        <div
+          className={cn(
+            "grid grid-cols-1 gap-[var(--space-3)] sm:grid-cols-3",
+            answered && "hidden",
+          )}
+        >
           {challenge.optionAnimalIds.map((animalId) => {
             const animal = getAnimal(animalId);
             if (!animal) return null;
@@ -263,17 +272,6 @@ export function ChallengeBoard({
                 {challenge.explanation}
               </p>
               <div className="flex flex-wrap gap-[var(--space-3)]">
-                <LargeTouchButton
-                  variant="secondary"
-                  onClick={() => {
-                    noteInteraction();
-                    setSelectedId(null);
-                    setPlacedId(null);
-                    setDraggingId(null);
-                  }}
-                >
-                  {tracksCopy.tryAgain}
-                </LargeTouchButton>
                 <LargeTouchButton
                   variant="secondary"
                   onClick={() => {

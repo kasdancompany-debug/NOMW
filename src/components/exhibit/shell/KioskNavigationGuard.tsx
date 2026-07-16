@@ -33,6 +33,7 @@ function isAllowedHref(href: string): boolean {
  * Guests may freely move between in-app exhibits.
  */
 export function KioskNavigationGuard(_props: KioskNavigationGuardProps) {
+  void _props;
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;

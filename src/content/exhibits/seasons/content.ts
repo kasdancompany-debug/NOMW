@@ -413,7 +413,7 @@ export const seasonalStories: SeasonalAnimalStoryData[] = [
 ];
 
 export const seasonsCopy = {
-  wheelHint: "Turn the year — or drag the timeline",
+  wheelHint: "Touch a season or drag through the year",
   followHint: "Choose an animal to follow through all four seasons",
   followLabel: "Follow across seasons",
   stopFollow: "Stop following",

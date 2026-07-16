@@ -21,15 +21,11 @@ type AnimalSilhouetteProps = {
   compact?: boolean;
 };
 
-/**
- * Stylized species silhouettes for MVP scale + presence.
- * Replace with photographic cutouts / illustrated finals later — keep relative scale via height.
- */
+/** Stylized species silhouettes for scale and visual presence. */
 export function AnimalSilhouette({
   kind,
   className,
   prominent = true,
-  compact = false,
 }: AnimalSilhouetteProps) {
   return (
     <svg

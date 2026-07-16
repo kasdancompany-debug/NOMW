@@ -31,7 +31,7 @@ test.describe("animal profiles", () => {
     await dismissAttractIfPresent(page);
 
     await page.getByRole("button", { name: "Meet the Animals" }).click();
-    const fullProfile = page.getByRole("button", { name: "Full profile" }).first();
+    const fullProfile = page.getByRole("button", { name: "Open moose profile" });
     await expect(fullProfile).toBeVisible({ timeout: 8_000 });
     await fullProfile.click();
 

@@ -97,16 +97,20 @@ export function WaterExhibit() {
     noteInteraction();
     const zone = waterZones.find((entry) => entry.id === zoneId);
     if (!zone) return;
-    applyProgress(zone.center);
-    if (!reducedMotion) {
-      const viewport = viewportRef.current;
-      if (!viewport) return;
-      const maxTravel = viewport.clientHeight * (COLUMN_SCALE - 1);
-      void animate(y, -zone.center * maxTravel, {
-        duration: 0.55,
-        ease: [0.22, 1, 0.36, 1],
-      });
+    const viewport = viewportRef.current;
+    if (!viewport || reducedMotion) {
+      applyProgress(zone.center);
+      return;
     }
+
+    const maxTravel = viewport.clientHeight * (COLUMN_SCALE - 1);
+    void animate(y, -zone.center * maxTravel, {
+      duration: 0.65,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (value) => {
+        setProgress(Math.min(1, Math.max(0, -value / maxTravel)));
+      },
+    });
   };
 
   return (
@@ -184,7 +188,15 @@ export function WaterExhibit() {
               <p className="mt-[var(--space-3)] text-[length:var(--text-body)] text-[var(--text-on-dark-muted)]">
                 {WATER_EXHIBIT_SUBTITLE}
               </p>
-              <p className="mt-[var(--space-4)] text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
+              <div className="mt-[var(--space-5)] border-l border-[var(--color-aurora-teal)]/55 pl-[var(--space-4)]">
+                <p className="font-[family-name:var(--font-display)] text-[length:var(--text-title)] text-white">
+                  {activeZone.name}
+                </p>
+                <p className="mt-1 max-w-[28ch] text-[length:var(--text-body-sm)] leading-relaxed text-white/62">
+                  {activeZone.summary}
+                </p>
+              </div>
+              <p className="mt-[var(--space-4)] text-[length:var(--text-body-sm)] text-white/58">
                 {waterCopy.dragHint}
               </p>
             </header>
@@ -247,19 +259,8 @@ export function WaterExhibit() {
             </div>
           </div>
 
-          <div className="pointer-events-auto flex flex-col items-end justify-between">
+          <div className="pointer-events-auto flex flex-col items-end justify-center">
             <WaterZoneRail activeZoneId={activeZoneId} onSelect={jumpToZone} />
-            <GlassPanel density="dense" className="mt-[var(--space-4)] max-w-[16rem]">
-              <p className="text-[length:var(--text-label)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">
-                Now in
-              </p>
-              <p className="mt-[var(--space-2)] font-[family-name:var(--font-display)] text-[length:var(--text-title)] text-[var(--text-on-dark)]">
-                {activeZone.name}
-              </p>
-              <p className="mt-[var(--space-2)] text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-                {activeZone.summary}
-              </p>
-            </GlassPanel>
           </div>
         </div>
       </div>

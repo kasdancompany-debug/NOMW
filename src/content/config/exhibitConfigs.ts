@@ -113,7 +113,9 @@ function baseConfig(
     attractModeDelayMs: partial.attractModeDelayMs,
     showProgress: partial.showProgress,
     showTitleArea: partial.showTitleArea,
-    showShellBrand: partial.showShellBrand,
+    // Every exhibit owns its editorial title treatment. Keep only the global
+    // Sound / Restart controls in shell chrome so headings never collide.
+    showShellBrand: partial.showShellBrand ?? false,
     allowedNavigation: {
       allowHomeRestart: true,
       allowedPaths: partial.allowedPaths ?? [`/exhibit/${partial.id}`],

@@ -321,7 +321,7 @@ export const tracksCopy = {
   incorrectSoft: "Not that one — here’s the story",
   replayCall: "Play call again",
   callPlaying: "Playing…",
-  callMissing: "Call audio arrives with final media",
+  callMissing: "Call unavailable",
   audioCaption: "Caption",
   startOver: "New set of clues",
   detectiveHint: "You’re a wildlife detective — every clue has a gentle answer",

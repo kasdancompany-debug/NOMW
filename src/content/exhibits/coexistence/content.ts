@@ -326,6 +326,22 @@ export const coexistenceScenarios: CoexistenceScenario[] = [
   },
 ];
 
+/**
+ * Visitor-floor set: low-risk stewardship choices only. Encounter, roadside,
+ * camping, and emergency-adjacent scenarios remain in the curator dataset but
+ * must not be shown until their authority-review fields are cleared.
+ */
+const FLOOR_READY_SCENARIO_IDS = new Set([
+  "no-feed-fox",
+  "nesting-shore",
+  "wetlands",
+  "invasive",
+]);
+
+export const floorReadyCoexistenceScenarios = coexistenceScenarios.filter((scenario) =>
+  FLOOR_READY_SCENARIO_IDS.has(scenario.id),
+);
+
 export const coexistenceCopy = {
   topicTag: "Living with wildlife",
   choosePrompt: "What would you do?",
@@ -333,7 +349,7 @@ export const coexistenceCopy = {
   whyLabel: "Why it helps",
   nextScenario: "Next situation",
   seeMoment: "Meet the wild neighbours",
-  disclaimerTitle: "About these safety notes",
+  disclaimerTitle: "A shared responsibility",
   progressLabel: "Situations",
 } as const;
 

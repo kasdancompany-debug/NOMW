@@ -78,7 +78,9 @@ test.describe("visitor accessibility & safety", () => {
 
     await gotoExhibit(page, "forest");
     await dismissAttractIfPresent(page);
-    await expect(page.getByRole("navigation", { name: "Forest animals" })).toBeVisible();
+    await expect(
+      page.getByRole("navigation", { name: "Forest animals" }).first(),
+    ).toBeVisible();
     await expect(page.getByRole("button", { name: /Forest animals \d+ of/i }).first()).toBeVisible();
   });
 
@@ -99,7 +101,7 @@ test.describe("visitor accessibility & safety", () => {
     const dialog = page.getByRole("dialog", { name: /profile/i });
     await expect(dialog).toBeVisible();
     await expect(
-      dialog.getByRole("img", { name: /Media arrives with final install/i }).first(),
+      dialog.getByRole("img", { name: /Media unavailable/i }).first(),
     ).toBeVisible({ timeout: 15_000 });
   });
 });
