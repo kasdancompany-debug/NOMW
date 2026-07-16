@@ -17,7 +17,6 @@ import {
 } from "@/content/config/stations";
 import {
   clearStationAssignment,
-  isPathAllowedForStation,
   loadStationAssignment,
   parseStationFromPathname,
   saveStationAssignment,
@@ -40,14 +39,17 @@ const StationContext = createContext<StationContextValue | null>(null);
 function BootPlaceholder({ message }: { message: string }) {
   return (
     <div className="flex h-[100dvh] w-[100dvw] items-center justify-center bg-boreal-night">
-      <p className="text-[length:var(--text-body)] text-[var(--text-on-dark-muted)]">{message}</p>
+      <p className="text-[length:var(--text-body)] text-[var(--text-on-dark-muted)]">
+        {message}
+      </p>
     </div>
   );
 }
 
 /**
- * Resolves station assignment from query → localStorage → direct exhibit URL,
- * shows first-launch setup when unset, and locks casual cross-station navigation.
+ * Station awareness without locking guests into one exhibit.
+ * Physical screens can still boot to a preferred route via URL / ?station=;
+ * visitors may freely open any /exhibit/* destination.
  */
 export function StationProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -74,9 +76,9 @@ export function StationProvider({ children }: { children: ReactNode }) {
     setAssignment(null);
   }, []);
 
-  // Hydrate + honour ?station= once (skip assignment writes inside simulator iframes)
   useEffect(() => {
     const isSimulator = searchParams.get("simulator") === "1";
+    const wantsSetup = searchParams.get("setup") === "1";
 
     const queryRaw = searchParams.get(STATION_QUERY_PARAM);
     if (queryRaw && isStationId(queryRaw) && !isSimulator) {
@@ -87,65 +89,42 @@ export function StationProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    if (wantsSetup && !isSimulator) {
+      clearStationAssignment();
+      setAssignment(null);
+      setHydrated(true);
+      return;
+    }
+
     const stored = loadStationAssignment();
     setAssignment(stored);
     setHydrated(true);
   }, [router, searchParams]);
 
-  // Direct exhibit URL assigns on first visit; wrong exhibit bounces to assigned
-  // Studio mode (?studio=1 / session) allows free hopping across stations while developing.
   useEffect(() => {
     if (!hydrated) return;
 
     const isSimulator = searchParams.get("simulator") === "1";
     if (isSimulator) return;
-
-    const studioHop =
-      searchParams.get("studio") === "1" ||
-      (typeof window !== "undefined" &&
-        (() => {
-          try {
-            return window.sessionStorage.getItem("nomow.studio.enabled") === "1";
-          } catch {
-            return false;
-          }
-        })());
+    if (pathname.startsWith("/dev/")) return;
+    if (searchParams.get("setup") === "1") return;
 
     const pathStation = parseStationFromPathname(pathname);
 
-    if (!assignment) {
-      if (pathStation) {
-        const next = saveStationAssignment(pathStation, "url");
-        setAssignment(next);
-      }
-      return;
+    // Remember which exhibit this display opened — never bounce away from other exhibits.
+    if (pathStation && pathStation !== assignment?.stationId) {
+      const next = saveStationAssignment(pathStation, assignment ? "staff" : "url");
+      setAssignment(next);
     }
 
+    // Guest home: open Welcome when hitting root with no explicit setup.
     if (pathname === "/" || pathname === "") {
-      router.replace(stationExhibitPath(assignment.stationId));
-      return;
-    }
-
-    if (pathname.startsWith("/dev/")) return;
-
-    if (studioHop && pathStation) {
-      if (pathStation !== assignment.stationId) {
-        const next = saveStationAssignment(pathStation, "staff");
-        setAssignment(next);
-      }
-      return;
-    }
-
-    if (
-      pathStation &&
-      pathStation !== assignment.stationId &&
-      !isPathAllowedForStation(pathname, assignment.stationId)
-    ) {
-      router.replace(stationExhibitPath(assignment.stationId));
+      router.replace("/exhibit/welcome");
     }
   }, [assignment, hydrated, pathname, router, searchParams]);
 
-  const needsSetup = hydrated && !assignment && (pathname === "/" || pathname === "");
+  const needsSetup =
+    hydrated && !assignment && searchParams.get("setup") === "1";
 
   const value = useMemo(
     () => ({
@@ -159,7 +138,7 @@ export function StationProvider({ children }: { children: ReactNode }) {
   );
 
   const redirectingHome =
-    hydrated && Boolean(assignment) && (pathname === "/" || pathname === "");
+    hydrated && (pathname === "/" || pathname === "") && searchParams.get("setup") !== "1";
 
   return (
     <StationContext.Provider value={value}>
@@ -168,7 +147,7 @@ export function StationProvider({ children }: { children: ReactNode }) {
       ) : needsSetup ? (
         <StationSetupScreen onAssign={(id) => assignStation(id, "setup")} />
       ) : redirectingHome ? (
-        <BootPlaceholder message="Opening assigned exhibit…" />
+        <BootPlaceholder message="Opening Welcome…" />
       ) : (
         children
       )}

@@ -2,6 +2,7 @@
 
 import { AnimatePresence } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getAnimal } from "@/content/animals";
 import {
   forestAnimals,
@@ -26,6 +27,7 @@ const FOREST_ANIMAL_IDS = forestAnimals.map((entry) => entry.animalId);
  * Giants of the Forest — cinematic three-panel composition matching the installation look.
  */
 export function ForestExhibit() {
+  const router = useRouter();
   const { registerResetHandler, noteInteraction, softReset } = useKioskSession();
   const {
     openProfile,
@@ -128,6 +130,7 @@ export function ForestExhibit() {
             closeProfile();
             setMode("explore");
             softReset("home-control");
+            router.push("/exhibit/welcome");
           }}
         >
           <span aria-hidden className="text-sm leading-none">

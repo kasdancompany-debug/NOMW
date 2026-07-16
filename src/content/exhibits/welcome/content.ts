@@ -181,7 +181,7 @@ export const roomStations: RoomStationInvite[] = [
   {
     slug: "forest",
     title: "Giants of the Forest",
-    invitation: "Swipe boreal giants, open a profile, and compare true scale.",
+    invitation: "Many animals call the forest home — meet them up close.",
     mvpFeatured: true,
   },
   {
@@ -192,28 +192,30 @@ export const roomStations: RoomStationInvite[] = [
   },
   {
     slug: "water",
-    title: "Water",
-    invitation: "Coming with the full room — lakes, rivers, and wetlands.",
+    title: "Life Beneath the Water",
+    invitation: "Travel the water column from shoreline light to river-bottom dark.",
+    mvpFeatured: true,
   },
   {
     slug: "sky",
-    title: "Sky",
-    invitation: "Coming with the full room — wings and weather.",
+    title: "Wings of the North",
+    invitation: "Pan the sky — birds, calls, and flight styles.",
+    mvpFeatured: true,
   },
   {
     slug: "seasons",
-    title: "Seasons",
-    invitation: "Coming with the full room — the turning year.",
+    title: "Four Seasons of Survival",
+    invitation: "Turn the year on one Northern Ontario shore.",
   },
   {
     slug: "tracks",
-    title: "Tracks",
-    invitation: "Coming with the full room — prints and signs.",
+    title: "Tracks, Calls and Clues",
+    invitation: "Read the signs animals leave behind.",
   },
   {
     slug: "coexistence",
-    title: "Coexistence",
-    invitation: "Coming with the full room — sharing the landscape.",
+    title: "Living Together",
+    invitation: "Practice gentle choices beside wildlife.",
   },
 ];
 

@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import { staffConfig } from "@/content/config/staff.config";
-import { useStationAssignment } from "@/components/station/StationProvider";
-import {
-  isPathAllowedForStation,
-  stationExhibitPath,
-} from "@/lib/kiosk/station";
 import type { ExhibitNavigationConfig } from "@/types/exhibit-shell";
 
 type KioskNavigationGuardProps = {
@@ -15,12 +9,7 @@ type KioskNavigationGuardProps = {
   navigation: ExhibitNavigationConfig;
 };
 
-function isAllowedHref(
-  href: string,
-  exhibitPath: string,
-  allowedPaths: string[],
-  assignedPath: string | null,
-): boolean {
+function isAllowedHref(href: string): boolean {
   if (!href || href === "#") return true;
   if (href.startsWith("mailto:") || href.startsWith("tel:")) return false;
 
@@ -30,62 +19,20 @@ function isAllowedHref(
 
     const path = url.pathname;
     if (path === staffConfig.route) return true;
-    if (path === exhibitPath || path.startsWith(`${exhibitPath}/`)) return true;
-    if (assignedPath && (path === assignedPath || path.startsWith(`${assignedPath}/`))) {
-      return true;
-    }
-    return allowedPaths.some(
-      (allowed) => path === allowed || path.startsWith(`${allowed}/`),
-    );
+    if (path.startsWith("/exhibit/")) return true;
+    if (path.startsWith("/dev/")) return true;
+    if (path === "/" || path === "") return true;
+    return false;
   } catch {
     return false;
   }
 }
 
 /**
- * Blocks outbound links, new tabs, and in-app routes outside this station's allow-list.
- * Station assignment (localStorage) is the source of truth across the shared build.
+ * Kiosk safety net: block external sites, new tabs, and window.open.
+ * Guests may freely move between in-app exhibits.
  */
-export function KioskNavigationGuard({ exhibitPath, navigation }: KioskNavigationGuardProps) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { assignment } = useStationAssignment();
-
-  const lockedPath = assignment ? stationExhibitPath(assignment.stationId) : exhibitPath;
-  const stationId = assignment?.stationId;
-
-  useEffect(() => {
-    if (pathname === staffConfig.route) return;
-
-    if (stationId && !isPathAllowedForStation(pathname, stationId)) {
-      router.replace(lockedPath);
-      return;
-    }
-
-    const allowed = new Set([lockedPath, exhibitPath, ...navigation.allowedPaths]);
-
-    // Studio hop: allow any exhibit route while developing across stations.
-    let studioHop = false;
-    try {
-      studioHop =
-        new URLSearchParams(window.location.search).get("studio") === "1" ||
-        window.sessionStorage.getItem("nomow.studio.enabled") === "1";
-    } catch {
-      studioHop = false;
-    }
-    if (studioHop && pathname.startsWith("/exhibit/")) return;
-
-    if (
-      pathname !== lockedPath &&
-      pathname !== exhibitPath &&
-      !pathname.startsWith(`${exhibitPath}/`) &&
-      !pathname.startsWith(`${lockedPath}/`) &&
-      ![...allowed].some((path) => pathname === path || pathname.startsWith(`${path}/`))
-    ) {
-      router.replace(lockedPath);
-    }
-  }, [pathname, exhibitPath, lockedPath, navigation.allowedPaths, router, stationId]);
-
+export function KioskNavigationGuard(_props: KioskNavigationGuardProps) {
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
@@ -101,7 +48,7 @@ export function KioskNavigationGuard({ exhibitPath, navigation }: KioskNavigatio
         return;
       }
 
-      if (!isAllowedHref(href, exhibitPath, navigation.allowedPaths, lockedPath)) {
+      if (!isAllowedHref(href)) {
         event.preventDefault();
         event.stopPropagation();
       }
@@ -126,7 +73,7 @@ export function KioskNavigationGuard({ exhibitPath, navigation }: KioskNavigatio
       document.removeEventListener("auxclick", onAuxClick, true);
       window.open = originalOpen;
     };
-  }, [exhibitPath, lockedPath, navigation.allowedPaths]);
+  }, []);
 
   return null;
 }
