@@ -79,7 +79,7 @@ function parsePng(file) {
   return { width, height, pixels };
 }
 
-function analyze(name) {
+function analyze(name, calibration) {
   const { width, height, pixels } = parsePng(
     `public/media/animals/silhouettes/${name}.png`,
   );
@@ -98,48 +98,42 @@ function analyze(name) {
     }
   }
   const contentH = maxY - minY + 1;
-  // Shoulder band: mid-front torso columns (quadrupeds face right)
-  const cx0 = minX + Math.floor((maxX - minX) * 0.28);
-  const cx1 = minX + Math.floor((maxX - minX) * 0.52);
-  let withersY = maxY;
-  for (let x = cx0; x <= cx1; x++) {
-    for (let y = minY; y <= maxY; y++) {
-      if (pixels[(y * width + x) * 4 + 3] > 20) {
-        withersY = Math.min(withersY, y);
-        break;
-      }
-    }
-  }
-  const groundToWithers = maxY - withersY + 1;
-  const bpFull = groundToWithers / height;
-  const bpContent = groundToWithers / contentH;
+  // Shoulder landmarks are anatomical annotations, not alpha-column guesses.
+  // Antlers can cross torso columns and made the old caribou estimate 0.87
+  // instead of 0.568, shrinking a 1.1 m caribou to the apparent size of a dog.
+  const shoulderY = calibration.shoulderY ?? minY;
+  const groundToShoulder = maxY - shoulderY + 1;
+  const artworkProportion = groundToShoulder / height;
+  const relativeToHuman = calibration.shoulderHeightM / 1.7;
+  const projectedArtHeight = relativeToHuman / artworkProportion;
   console.log(
     [
       name.padEnd(20),
       `${width}x${height}`,
       `fill=${Math.round((contentH / height) * 100)}%`,
-      `padT=${Math.round((minY / height) * 100)}%`,
-      `padB=${Math.round(((height - 1 - maxY) / height) * 100)}%`,
-      `bpFull=${bpFull.toFixed(2)}`,
-      `bpContent=${bpContent.toFixed(2)}`,
+      `shoulder=${calibration.shoulderHeightM.toFixed(2)}m`,
+      `artShoulder=${artworkProportion.toFixed(3)}`,
+      `fullArtVsHuman=${projectedArtHeight.toFixed(3)}`,
     ].join("  "),
   );
-  return { bpFull, bpContent };
+  return { artworkProportion, projectedArtHeight };
 }
 
-const names = [
-  "human",
-  "black-bear",
-  "grey-wolf",
-  "moose",
-  "woodland-caribou",
-  "white-tailed-deer",
-  "canada-lynx",
-];
-for (const n of names) {
+const calibrations = {
+  human: { shoulderY: 8, shoulderHeightM: 1.7 },
+  "black-bear": { shoulderY: 12, shoulderHeightM: 0.77 },
+  "grey-wolf": { shoulderY: 225, shoulderHeightM: 0.69 },
+  moose: { shoulderY: 176, shoulderHeightM: 1.9 },
+  "woodland-caribou": { shoulderY: 387, shoulderHeightM: 1.1 },
+  "white-tailed-deer": { shoulderY: 346, shoulderHeightM: 0.9 },
+  "canada-lynx": { shoulderY: 145, shoulderHeightM: 0.52 },
+};
+
+for (const [name, calibration] of Object.entries(calibrations)) {
   try {
-    analyze(n);
+    analyze(name, calibration);
   } catch (e) {
-    console.log(n, e.message);
+    console.log(name, e.message);
+    process.exitCode = 1;
   }
 }

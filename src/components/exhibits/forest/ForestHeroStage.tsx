@@ -88,13 +88,25 @@ export function ForestHeroStage({
                   aria-hidden
                 />
 
+                <div
+                  className="pointer-events-none absolute right-[3%] left-[4%] z-[1] border-t border-dashed border-white/25"
+                  style={{ bottom: `${presentation.relativeHeight * humanStagePct}%` }}
+                  aria-hidden
+                >
+                  <span className="absolute right-0 bottom-1 font-[family-name:var(--font-ui)] text-[9px] tracking-[0.16em] text-white/58 uppercase">
+                    Shoulder · {presentation.shoulderHeightM.toFixed(2)} m
+                  </span>
+                </div>
+
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={forestSilhouetteSrc(animal.id)}
+                  data-testid="forest-animal-silhouette"
+                  data-animal-id={animal.id}
                   alt=""
-                  className="absolute bottom-0 left-[54%] w-auto max-w-[86%] -translate-x-1/2 object-contain object-bottom"
+                  className="absolute bottom-0 left-[54%] z-[2] w-auto max-w-[86%] -translate-x-1/2 object-contain object-bottom"
                   style={{
-                    height: `${Math.round(animalStagePct)}%`,
+                    height: `${animalStagePct}%`,
                     opacity: 0.94,
                     filter:
                       "brightness(0) invert(1) drop-shadow(0 0 22px rgba(160,210,180,0.4)) drop-shadow(0 16px 28px rgba(0,0,0,0.45))",
@@ -103,12 +115,13 @@ export function ForestHeroStage({
                 />
 
                 <div
-                  className="absolute bottom-0 left-[8%] flex items-end"
+                  className="absolute bottom-0 left-[8%] z-[2] flex items-end"
                   style={{ height: `${humanStagePct}%` }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={FOREST_HUMAN_SILHOUETTE}
+                    data-testid="forest-human-silhouette"
                     alt=""
                     className="h-full w-auto object-contain object-bottom opacity-80"
                     style={{

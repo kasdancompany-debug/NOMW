@@ -8,6 +8,7 @@ import {
 } from "@/components/animals/AnimalSilhouette";
 import {
   forestBodyProportion,
+  forestSilhouetteAspectRatio,
   forestSilhouetteDisplayHeight,
   forestSilhouetteSrc,
   HUMAN_RELATIVE_HEIGHT,
@@ -103,7 +104,14 @@ export function SizeComparison({
             >
               <div
                 className="flex items-end justify-center"
-                style={{ height, width: Math.max(40, height * 0.65) }}
+                style={{
+                  height,
+                  width: Math.max(
+                    40,
+                    height *
+                      (useCutout ? forestSilhouetteAspectRatio(subject.id) : 0.65),
+                  ),
+                }}
                 aria-hidden
               >
                 {useCutout ? (

@@ -78,7 +78,7 @@ function CompareFigure({
       <img
         src={forestSilhouetteSrc(animalId)}
         alt=""
-        className="w-auto max-w-full object-contain object-bottom"
+        className="w-auto max-w-none object-contain object-bottom"
         style={{
           height,
           filter:

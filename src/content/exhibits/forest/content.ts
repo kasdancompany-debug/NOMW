@@ -6,6 +6,8 @@ export type ForestMode = "explore" | "compare" | "tracks";
 
 export type ForestAnimalPresentation = {
   animalId: AnimalId;
+  /** Typical adult shoulder / withers height used for the visual scale. */
+  shoulderHeightM: number;
   /**
    * Shoulder / withers height relative to a standing adult human (= 1.0 ≈ 1.7 m).
    * Used for size compare + hero scale — visual guide, not a certified metric.
@@ -16,6 +18,8 @@ export type ForestAnimalPresentation = {
    * Antlered species are < 1 so antlers can extend above the shoulder line.
    */
   bodyProportion?: number;
+  /** Intrinsic transparent PNG width ÷ height; prevents width constraints changing scale. */
+  artworkAspectRatio: number;
   /** Short habitat line for the Habitat tab (museum-safe). */
   habitatBlurb: string;
   /** Food / diet line — soft wording; detailed claims stay needs-research. */
@@ -48,6 +52,11 @@ export const forestProfileTabs: { id: ForestProfileTab; label: string }[] = [
  * Quadruped values are typical shoulder / withers height ÷ 1.7 m.
  */
 export const HUMAN_RELATIVE_HEIGHT = 1;
+export const HUMAN_REFERENCE_HEIGHT_M = 1.7;
+
+function relativeShoulderHeight(shoulderHeightM: number): number {
+  return shoulderHeightM / HUMAN_REFERENCE_HEIGHT_M;
+}
 
 /**
  * Artwork height needed so the withers land at `relativeHeight`.
@@ -65,60 +74,69 @@ export function forestSilhouetteDisplayHeight(
 export const forestAnimals: ForestAnimalPresentation[] = [
   {
     animalId: "moose",
-    // Bull withers ~1.8–2.1 m → ~1.15× adult human
-    relativeHeight: 1.15,
-    // Measured: ground→withers ≈ 76% of PNG (antlers above)
-    bodyProportion: 0.76,
+    // Typical adult midpoint: about 1.9 m at the shoulder.
+    shoulderHeightM: 1.9,
+    relativeHeight: relativeShoulderHeight(1.9),
+    // Anatomical landmark in this artwork: hoof baseline → shoulder hump.
+    bodyProportion: 0.802,
+    artworkAspectRatio: 1247 / 931,
     habitatBlurb: "Forest edges, wetlands, and soft shoreline ground.",
     foodBlurb: "Woody browse and aquatic plants when waters are open.",
     survivalBlurb: "Long legs carry them through deep snow and muskeg.",
   },
   {
     animalId: "black-bear",
-    // On all fours, shoulder ~0.9 m → ~0.53× adult human
-    relativeHeight: 0.53,
-    // Measured: head held low — withers ≈ 97% of PNG
-    bodyProportion: 0.97,
+    // Mean of reported adult female / male means: about 0.77 m.
+    shoulderHeightM: 0.77,
+    relativeHeight: relativeShoulderHeight(0.77),
+    bodyProportion: 0.964,
+    artworkAspectRatio: 1009 / 563,
     habitatBlurb: "Wide forest ranges, berry patches, and shoreline edges.",
     foodBlurb: "Seasonal omnivore — plants, insects, and whatever the year offers.",
     survivalBlurb: "A year shaped by food: green-up, abundance, then denning rest.",
   },
   {
     animalId: "grey-wolf",
-    // Shoulder ~0.75–0.85 m → ~0.47× adult human
-    relativeHeight: 0.47,
-    // Measured: ground→withers ≈ 70% of PNG (ears/head above)
-    bodyProportion: 0.7,
+    // Midpoint of the typical 0.61–0.76 m adult range.
+    shoulderHeightM: 0.69,
+    relativeHeight: relativeShoulderHeight(0.69),
+    bodyProportion: 0.699,
+    artworkAspectRatio: 1019 / 774,
     habitatBlurb: "Broad boreal landscapes where prey and pack routes meet.",
     foodBlurb: "A hunter of forest and snow country — more often tracked than seen.",
     survivalBlurb: "Endurance travelers; family groups shape the quiet drama of the woods.",
   },
   {
     animalId: "woodland-caribou",
-    // Withers ~1.1 m → ~0.65× adult human
-    relativeHeight: 0.65,
-    // Measured: ground→withers ≈ 87% of PNG
-    bodyProportion: 0.87,
+    // Ontario / federal range is 1.0–1.2 m; midpoint used for display.
+    shoulderHeightM: 1.1,
+    relativeHeight: relativeShoulderHeight(1.1),
+    // Hoof baseline → top of back. Antlers overlap the torso horizontally, so
+    // an alpha-column scan incorrectly reported 0.87 and made this look dog-sized.
+    bodyProportion: 0.572,
+    artworkAspectRatio: 969 / 922,
     habitatBlurb: "Older forest and lichen country of the living north.",
     foodBlurb: "Tied to lichen and the intact forests that sustain it.",
     survivalBlurb: "A traveler whose future depends on habitat that remains whole.",
   },
   {
     animalId: "white-tailed-deer",
-    // Shoulder ~0.9–1.0 m → ~0.56× adult human
-    relativeHeight: 0.56,
-    // Measured: ground→withers ≈ 60% of PNG (antlers above)
-    bodyProportion: 0.6,
+    // Typical midpoint of the 0.8–1.0 m adult range.
+    shoulderHeightM: 0.9,
+    relativeHeight: relativeShoulderHeight(0.9),
+    bodyProportion: 0.601,
+    artworkAspectRatio: 807 / 888,
     habitatBlurb: "Forest edges, clearings, and winter yards.",
     foodBlurb: "Browser of edges — twigs, leaves, and seasonal greens.",
     survivalBlurb: "A white flag of alarm, then a bound toward cover.",
   },
   {
     animalId: "canada-lynx",
-    // Shoulder ~0.48–0.56 m → ~0.32× adult human
-    relativeHeight: 0.32,
-    // Measured: ground→withers ≈ 77% of PNG (ears above)
-    bodyProportion: 0.77,
+    // Typical midpoint of the 0.48–0.56 m adult range.
+    shoulderHeightM: 0.52,
+    relativeHeight: relativeShoulderHeight(0.52),
+    bodyProportion: 0.776,
+    artworkAspectRatio: 973 / 682,
     habitatBlurb: "Deep-snow forest where snowshoe hares thrive.",
     foodBlurb: "Closely linked to hare country in the boreal winter.",
     survivalBlurb: "Broad paws and quiet steps — a specialist of powder and dusk.",
@@ -129,6 +147,12 @@ export const forestAnimals: ForestAnimalPresentation[] = [
 export function forestBodyProportion(animalId: string): number {
   return (
     forestAnimals.find((entry) => entry.animalId === animalId)?.bodyProportion ?? 1
+  );
+}
+
+export function forestSilhouetteAspectRatio(animalId: string): number {
+  return (
+    forestAnimals.find((entry) => entry.animalId === animalId)?.artworkAspectRatio ?? 1
   );
 }
 
@@ -156,7 +180,7 @@ export const forestCopy = {
   showLess: "Show less",
   sizeNote:
     "Scale shows shoulder height for animals beside a standing adult (~1.7 m).",
-  humanScale: "Human scale",
+  humanScale: "Adult human · 1.70 m",
   navLead: "Meet the great travelers of the boreal forest. Touch an animal to explore.",
   aboutTitle: "About",
   didYouKnow: "Did you know?",
