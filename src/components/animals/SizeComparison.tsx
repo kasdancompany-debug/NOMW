@@ -78,8 +78,7 @@ export function SizeComparison({
                   <img
                     src={forestSilhouetteSrc(subject.id)}
                     alt=""
-                    className="max-h-full w-auto object-contain object-bottom"
-                    style={{ filter: "brightness(0) invert(0.72)" }}
+                    className="max-h-full w-auto object-contain object-bottom opacity-90 brightness-0 invert"
                     draggable={false}
                   />
                 ) : (

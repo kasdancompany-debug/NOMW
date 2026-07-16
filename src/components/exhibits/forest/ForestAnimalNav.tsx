@@ -66,7 +66,7 @@ export function ForestAnimalNav({ activeIndex, onSelect, onCompare }: ForestAnim
                     <img
                       src={forestSilhouetteSrc(entry.animalId)}
                       alt=""
-                      className="max-h-10 max-w-full object-contain mix-blend-multiply brightness-0 invert"
+                      className="max-h-10 max-w-full object-contain brightness-0 invert opacity-90"
                       draggable={false}
                     />
                   </span>

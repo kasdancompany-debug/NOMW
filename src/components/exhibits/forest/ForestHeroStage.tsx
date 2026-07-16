@@ -79,8 +79,8 @@ export function ForestHeroStage({
             <img
               src={forestSilhouetteSrc(animal.id)}
               alt=""
-              className="max-w-[92%] object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)] mix-blend-multiply"
-              style={{ height: heightPx, filter: "brightness(0)" }}
+              className="max-w-[92%] object-contain object-bottom drop-shadow-[0_18px_40px_rgba(0,0,0,0.65)]"
+              style={{ height: heightPx }}
               draggable={false}
             />
 
@@ -92,7 +92,7 @@ export function ForestHeroStage({
               <img
                 src={FOREST_HUMAN_SILHOUETTE}
                 alt=""
-                className="h-full w-auto object-contain object-bottom mix-blend-multiply brightness-0 invert opacity-90"
+                className="h-full w-auto object-contain object-bottom opacity-95 brightness-0 invert"
                 draggable={false}
               />
               <p className="whitespace-nowrap text-[9px] tracking-[0.16em] text-white/70 uppercase">
