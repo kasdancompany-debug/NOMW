@@ -155,7 +155,7 @@ export const exhibitConfigs: Record<ExhibitSlug, ExhibitConfig> = {
     id: "forest",
     title: "Giants of the Forest",
     subtitle: "Meet the great travelers of the boreal",
-    invitation: "Swipe through the giants of the boreal — touch to enter the forest.",
+    invitation: "Many animals call the forest home — touch to explore.",
     inactivityTimeoutMs: idleConfig.timeoutMs,
     attractModeDelayMs: idleConfig.timeoutMs + 5_000,
     showProgress: false,
@@ -165,7 +165,7 @@ export const exhibitConfigs: Record<ExhibitSlug, ExhibitConfig> = {
     ambientTone: "mist",
     attractExtras: {
       title: "Giants of the Forest",
-      invitation: "Moose and companions among the trees — touch to explore.",
+      invitation: "Many animals call the forest home — touch to explore.",
       promptLabel: "Touch to Explore",
     },
   }),
