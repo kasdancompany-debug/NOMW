@@ -35,15 +35,15 @@ export function ForestHeroStage({
 }: ForestHeroStageProps) {
   const reducedMotion = useReducedMotion();
   const x = useMotionValue(0);
-  const heightPx = Math.max(180, presentation.relativeHeight * 420);
-  const humanPx = HUMAN_RELATIVE_HEIGHT * 420;
+  const heightPx = Math.max(160, presentation.relativeHeight * 380);
+  const humanPx = HUMAN_RELATIVE_HEIGHT * 380;
 
   const go = (next: number) => {
     onIndexChange(Math.min(count - 1, Math.max(0, next)));
   };
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col justify-end pb-2">
+    <div className="relative flex min-h-0 flex-1 flex-col justify-end">
       <motion.div
         className="relative flex min-h-0 flex-1 cursor-grab items-end justify-center active:cursor-grabbing"
         style={{ x }}
@@ -65,11 +65,12 @@ export function ForestHeroStage({
             });
           }
         }}
+        aria-label={forestCopy.swipeHint}
       >
         <AnimatePresence mode="wait">
           <motion.div
             key={animal.id}
-            className="relative flex w-full max-w-[46rem] items-end justify-center"
+            className="relative flex w-full max-w-[42rem] items-end justify-center pb-[var(--space-2)]"
             initial={reducedMotion ? false : { opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             exit={reducedMotion ? undefined : { opacity: 0, x: -36 }}
@@ -79,13 +80,13 @@ export function ForestHeroStage({
             <img
               src={forestSilhouetteSrc(animal.id)}
               alt=""
-              className="max-w-[92%] object-contain object-bottom drop-shadow-[0_18px_40px_rgba(0,0,0,0.65)]"
+              className="max-w-[88%] object-contain object-bottom drop-shadow-[0_18px_40px_rgba(0,0,0,0.65)]"
               style={{ height: heightPx }}
               draggable={false}
             />
 
             <div
-              className="absolute bottom-0 left-[8%] flex flex-col items-center gap-1"
+              className="absolute bottom-0 left-[6%] flex flex-col items-center"
               style={{ height: humanPx }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -95,7 +96,7 @@ export function ForestHeroStage({
                 className="h-full w-auto object-contain object-bottom opacity-95 brightness-0 invert"
                 draggable={false}
               />
-              <p className="whitespace-nowrap text-[9px] tracking-[0.16em] text-white/70 uppercase">
+              <p className="absolute top-full mt-[var(--space-2)] whitespace-nowrap text-[length:var(--text-micro)] tracking-[0.18em] text-white/65 uppercase">
                 {forestCopy.humanScale}
               </p>
             </div>
@@ -103,7 +104,7 @@ export function ForestHeroStage({
         </AnimatePresence>
       </motion.div>
 
-      <div className="relative z-10 mt-2 max-w-[34rem]">
+      <div className="relative z-10 mt-[var(--space-5)] max-w-[36rem]">
         <AnimatePresence mode="wait">
           <motion.div
             key={`copy-${animal.id}`}
@@ -114,30 +115,24 @@ export function ForestHeroStage({
           >
             <h2
               className={cn(
-                "font-[family-name:var(--font-ui)] text-[clamp(2.75rem,5.5vw,4.75rem)]",
-                "font-bold tracking-[0.04em] text-white uppercase",
+                "font-[family-name:var(--font-ui)] text-[clamp(2.25rem,4.2vw,3.75rem)]",
+                "font-bold leading-[1.05] tracking-[0.06em] text-white uppercase",
                 "[text-shadow:0_2px_28px_rgba(0,0,0,0.55)]",
               )}
             >
               {animal.commonName}
             </h2>
-            <p className="mt-1 font-[family-name:var(--font-body)] text-[length:var(--text-lead)] text-[var(--color-museum-warm)] italic">
+            <p className="mt-[var(--space-2)] font-[family-name:var(--font-body)] text-[length:var(--text-lead)] leading-snug text-[var(--color-museum-warm)] italic">
               {animal.scientificName}
             </p>
-            <p className="mt-4 max-w-[38ch] text-[length:var(--text-body)] leading-relaxed text-white/88">
+            <p className="mt-[var(--space-4)] max-w-[40ch] text-[length:var(--text-body)] leading-[1.65] text-white/88">
               {animal.shortIntroduction}
             </p>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      <div className="mt-5 flex flex-col items-start gap-3">
-        <div className="rounded-full border border-white/15 bg-black/35 px-4 py-2 text-[12px] tracking-[0.06em] text-white/75">
-          <span className="mr-2 font-semibold tracking-[0.14em] text-[var(--color-museum-warm)] uppercase">
-            Tip
-          </span>
-          {forestCopy.swipeHint}
-        </div>
+      <div className="mt-[var(--space-6)] pb-[var(--space-1)]">
         <ProgressDots
           count={count}
           activeIndex={index}

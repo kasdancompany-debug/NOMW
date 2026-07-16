@@ -26,7 +26,7 @@ type ForestInsightPanelProps = {
 };
 
 function StatIcon({ id }: { id: string }) {
-  const common = "h-5 w-5 text-[var(--color-aurora-teal)]";
+  const common = "mt-0.5 h-5 w-5 shrink-0 text-[var(--color-aurora-teal)]";
   switch (id) {
     case "height":
       return (
@@ -75,10 +75,10 @@ export function ForestInsightPanel({
     animal.adaptationFacts.find((f) => f.confidence === "general-knowledge")?.text;
 
   return (
-    <section className="flex w-[min(100%,28rem)] shrink-0 flex-col xl:w-[30rem]">
-      <div className="flex flex-1 flex-col overflow-hidden rounded-[18px] border border-[rgba(111,143,94,0.35)] bg-[rgba(8,18,16,0.78)] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.35)] backdrop-blur-[10px]">
+    <section className="flex h-full w-[min(100%,26rem)] shrink-0 flex-col xl:w-[28rem]">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-md)] border border-[rgba(111,143,94,0.32)] bg-[rgba(8,18,16,0.78)] px-[var(--space-6)] py-[var(--space-5)] shadow-[0_20px_50px_rgba(0,0,0,0.35)] backdrop-blur-[10px]">
         <div
-          className="flex flex-wrap gap-1.5"
+          className="flex flex-wrap gap-[var(--space-2)]"
           role="tablist"
           aria-label={`${animal.commonName} profile`}
         >
@@ -92,10 +92,10 @@ export function ForestInsightPanel({
                 role="tab"
                 aria-selected={active}
                 className={cn(
-                  "rounded-full px-3.5 py-2 text-[11px] tracking-[0.14em] uppercase",
+                  "rounded-[var(--radius-sm)] px-[var(--space-4)] py-[var(--space-2)] text-[11px] tracking-[0.14em] uppercase",
                   active
                     ? "bg-[rgba(90,140,110,0.95)] text-[#0c1612]"
-                    : "bg-white/5 text-[var(--text-on-dark-muted)]",
+                    : "bg-white/[0.05] text-[var(--text-on-dark-muted)]",
                 )}
                 onClick={() => onTabChange(tab.id)}
               >
@@ -105,22 +105,24 @@ export function ForestInsightPanel({
           })}
         </div>
 
-        <div className="mt-5 min-h-0 flex-1 overflow-y-auto" role="tabpanel">
+        <div className="mt-[var(--space-6)] min-h-0 flex-1 overflow-y-auto pr-1" role="tabpanel">
           {activeTab === "meet" ? (
-            <div className="grid gap-5 sm:grid-cols-[0.9fr_1.1fr]">
-              <ul className="space-y-4">
+            <div className="grid gap-[var(--space-6)] sm:grid-cols-[0.85fr_1.15fr]">
+              <ul className="space-y-[var(--space-5)]">
                 {stats.map((stat) => (
-                  <li key={stat.id} className="flex items-start gap-3">
+                  <li key={stat.id} className="flex items-start gap-[var(--space-3)]">
                     <StatIcon id={stat.id} />
                     <div>
                       <p className="text-[10px] tracking-[0.16em] text-[var(--text-on-dark-muted)] uppercase">
                         {stat.label}
                       </p>
-                      <p className="mt-0.5 text-[15px] text-[var(--text-on-dark)]">{stat.value}</p>
+                      <p className="mt-[var(--space-1)] text-[15px] leading-snug text-[var(--text-on-dark)]">
+                        {stat.value}
+                      </p>
                     </div>
                   </li>
                 ))}
-                <li className="pt-1 text-[10px] tracking-[0.08em] text-[rgba(212,176,122,0.7)] uppercase">
+                <li className="pt-[var(--space-1)] text-[10px] tracking-[0.08em] text-[rgba(212,176,122,0.7)] uppercase">
                   {forestCopy.statsPending}
                 </li>
               </ul>
@@ -129,13 +131,11 @@ export function ForestInsightPanel({
                 <p className="text-[11px] tracking-[0.16em] text-[var(--color-aurora-teal)] uppercase">
                   {forestCopy.aboutTitle} the {animal.commonName.toLowerCase()}
                 </p>
-                <p className="mt-2 text-[length:var(--text-body-sm)] leading-relaxed text-[var(--text-on-dark)]">
-                  {expanded
-                    ? animal.fullDescription
-                    : animal.shortIntroduction}
+                <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] leading-[1.65] text-[var(--text-on-dark)]">
+                  {expanded ? animal.fullDescription : animal.shortIntroduction}
                 </p>
                 <QuietButton
-                  className="mt-2 px-0"
+                  className="mt-[var(--space-3)] px-0"
                   onClick={() =>
                     setExpanded((value) => {
                       const next = !value;
@@ -148,12 +148,12 @@ export function ForestInsightPanel({
                 </QuietButton>
 
                 {didYouKnow ? (
-                  <div className="mt-5 rounded-[12px] border border-[rgba(111,143,94,0.28)] bg-[rgba(20,40,34,0.55)] p-3.5">
-                    <p className="flex items-center gap-2 text-[11px] tracking-[0.14em] text-[var(--color-museum-warm)] uppercase">
+                  <div className="mt-[var(--space-6)] rounded-[var(--radius-md)] border border-[rgba(111,143,94,0.28)] bg-[rgba(20,40,34,0.55)] px-[var(--space-4)] py-[var(--space-4)]">
+                    <p className="flex items-center gap-[var(--space-2)] text-[11px] tracking-[0.14em] text-[var(--color-museum-warm)] uppercase">
                       <span aria-hidden>✽</span>
                       {forestCopy.didYouKnow}
                     </p>
-                    <p className="mt-2 text-[length:var(--text-body-sm)] leading-relaxed text-[var(--text-on-dark-muted)]">
+                    <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] leading-[1.65] text-[var(--text-on-dark-muted)]">
                       {didYouKnow}
                     </p>
                   </div>
@@ -178,32 +178,32 @@ export function ForestInsightPanel({
           ) : null}
 
           {activeTab === "habitat" ? (
-            <p className="text-[length:var(--text-body)] leading-relaxed text-[var(--text-on-dark)]">
+            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
               {content.habitatBlurb}
             </p>
           ) : null}
 
           {activeTab === "food" ? (
-            <p className="text-[length:var(--text-body)] leading-relaxed text-[var(--text-on-dark)]">
+            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
               {content.foodBlurb}
             </p>
           ) : null}
 
           {activeTab === "survival" ? (
-            <p className="text-[length:var(--text-body)] leading-relaxed text-[var(--text-on-dark)]">
+            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
               {content.survivalBlurb}
             </p>
           ) : null}
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-start">
+      <div className="mt-[var(--space-5)] flex flex-col gap-[var(--space-3)] sm:flex-row sm:items-stretch">
         <div className="min-w-0 flex-1">
           <AnimalCallButton animal={animal} prominent />
         </div>
         <LargeTouchButton
           variant="secondary"
-          className="min-w-[11rem] border-white/15 bg-[rgba(12,22,20,0.75)]"
+          className="min-w-[10.5rem] border-white/15 bg-[rgba(12,22,20,0.75)]"
           onClick={onOpenFullProfile}
         >
           {forestCopy.fullProfile} ›
