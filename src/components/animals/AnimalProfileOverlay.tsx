@@ -18,7 +18,6 @@ import {
 import { AnimalNameplate } from "@/components/animals/AnimalNameplate";
 import { AnimalProfileCallButton } from "@/components/animals/AnimalProfileCallButton";
 import { SizeComparison, humanSizeSubject } from "@/components/animals/SizeComparison";
-import { LocalImage } from "@/components/media/LocalImage";
 import { LargeTouchButton } from "@/components/touch/LargeTouchButton";
 import { QuietButton } from "@/components/touch/QuietButton";
 import { useKioskSession } from "@/hooks/useKioskSession";
@@ -127,17 +126,14 @@ export function AnimalProfileOverlay() {
             <div className="grid min-h-0 flex-1 lg:grid-cols-[1.2fr_1fr]">
               {/* Portrait plane */}
               <div className="relative min-h-[16rem] overflow-hidden bg-[#0a1210] lg:min-h-0">
-                <LocalImage
+                {/* Native img — avoid next/image fill edge cases on kiosk overlay */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   key={portrait.src}
-                  asset={portrait}
+                  src={portrait.src}
                   alt={portrait.alt ?? animal.commonName}
-                  className="absolute inset-0"
-                  imgClassName="absolute inset-0 h-full w-full object-cover"
-                  fill
-                  priority
-                  sizes="(max-width: 1920px) 55vw, 1100px"
-                  showCaption={false}
-                  showAttribution={false}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  draggable={false}
                 />
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,transparent_55%,rgba(8,14,16,0.55)_100%)]" />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(8,14,16,0.75))] p-[var(--space-6)]">

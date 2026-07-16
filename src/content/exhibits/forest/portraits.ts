@@ -5,7 +5,7 @@ import type { AnimalId, MediaAsset } from "@/types/content";
  * Guest-facing captions stay scenic — no placeholder / replace-before-install language.
  */
 export function forestPortraitSrc(animalId: AnimalId | string): string {
-  return `/media/animals/portraits/${animalId}.webp`;
+  return `/media/animals/portraits/${animalId}.webp?v=2`;
 }
 
 export function forestPortraitAsset(
