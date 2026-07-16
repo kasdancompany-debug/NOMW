@@ -26,7 +26,7 @@ type ForestAnimalNavProps = {
  */
 export function ForestAnimalNav({ activeIndex, onSelect, onCompare }: ForestAnimalNavProps) {
   return (
-    <aside className="flex h-full w-[15.5rem] shrink-0 flex-col border-r border-white/[0.08] bg-[rgba(4,10,9,0.55)] px-[var(--space-5)] py-[var(--space-6)] backdrop-blur-[8px] xl:w-[16.5rem]">
+    <aside className="flex h-full w-[15.5rem] shrink-0 flex-col border-r border-white/[0.06] bg-[rgba(4,10,9,0.42)] px-[var(--space-5)] py-[var(--space-6)] backdrop-blur-[10px] xl:w-[16.5rem]">
       <p className="font-[family-name:var(--font-display)] text-[13px] leading-snug tracking-[0.01em] text-white/90">
         <StaffLogoHold>The Northern Ontario Museum of Wonder</StaffLogoHold>
       </p>

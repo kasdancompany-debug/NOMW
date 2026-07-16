@@ -75,8 +75,8 @@ export function ForestInsightPanel({
     animal.adaptationFacts.find((f) => f.confidence === "general-knowledge")?.text;
 
   return (
-    <section className="flex h-full w-[min(100%,24.5rem)] shrink-0 flex-col xl:w-[26rem]">
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-md)] border border-white/[0.1] bg-[rgba(6,14,12,0.72)] px-[var(--space-5)] py-[var(--space-5)] backdrop-blur-[10px]">
+    <section className="mt-1 flex h-[calc(100%-0.25rem)] w-[min(100%,24.5rem)] shrink-0 flex-col xl:w-[26rem]">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-md)] border border-white/[0.08] bg-[rgba(6,14,12,0.55)] px-[var(--space-5)] py-[var(--space-5)] backdrop-blur-[12px]">
         <div
           className="flex flex-wrap gap-x-[var(--space-1)] gap-y-[var(--space-2)]"
           role="tablist"
@@ -130,7 +130,10 @@ export function ForestInsightPanel({
                   {forestCopy.aboutTitle} the {animal.commonName.toLowerCase()}
                 </p>
                 <p className="mt-[var(--space-3)] text-[14px] leading-[1.7] text-white/82">
-                  {expanded ? animal.fullDescription : animal.shortIntroduction}
+                  {expanded
+                    ? animal.fullDescription
+                    : animal.fullDescription.slice(0, 160).trimEnd() +
+                      (animal.fullDescription.length > 160 ? "…" : "")}
                 </p>
                 <QuietButton
                   className="mt-[var(--space-3)] px-0 text-[13px]"

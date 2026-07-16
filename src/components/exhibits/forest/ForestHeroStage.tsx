@@ -42,9 +42,9 @@ export function ForestHeroStage({
   };
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col">
+    <div className="relative flex min-h-0 flex-1 flex-col overflow-visible">
       <motion.div
-        className="relative min-h-0 flex-1 cursor-grab active:cursor-grabbing"
+        className="relative min-h-0 flex-1 cursor-grab overflow-visible active:cursor-grabbing"
         style={{ x }}
         drag={reducedMotion ? false : "x"}
         dragConstraints={{ left: -140, right: 140 }}
@@ -75,21 +75,21 @@ export function ForestHeroStage({
             exit={reducedMotion ? undefined : { opacity: 0, x: -28 }}
             transition={scenicTransition(reducedMotion)}
           >
-            <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center">
-              {/* Shared ground plane — both figures scale against full stage height */}
+            <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center px-2 pt-4">
+              {/* Shared ground plane — leave headroom so antlers never clip */}
               <div className="relative h-full w-full max-w-[42rem]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={forestSilhouetteSrc(animal.id)}
                   alt=""
-                  className="absolute bottom-0 left-1/2 w-auto max-w-[92%] -translate-x-1/2 object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]"
-                  style={{ height: `${Math.round(scale * 100)}%` }}
+                  className="absolute bottom-0 left-1/2 w-auto max-w-[90%] -translate-x-1/2 object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]"
+                  style={{ height: `${Math.round(Math.min(scale, 1) * 78)}%` }}
                   draggable={false}
                 />
 
                 <div
-                  className="absolute bottom-0 left-[6%] flex items-end"
-                  style={{ height: `${Math.round(HUMAN_RELATIVE_HEIGHT * 100)}%` }}
+                  className="absolute bottom-0 left-[5%] flex items-end"
+                  style={{ height: `${Math.round(HUMAN_RELATIVE_HEIGHT * 78)}%` }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
