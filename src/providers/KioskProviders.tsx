@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { AudioLifecycleGuard } from "@/components/audio/AudioLifecycleGuard";
 import { ReducedMotionDocumentSync } from "@/components/a11y/ReducedMotionDocumentSync";
 import { SimulatorBridge } from "@/components/dev/SimulatorBridge";
+import { StudioSwitcher } from "@/components/dev/StudioSwitcher";
 import { DevIdleIndicator } from "@/components/kiosk/DevIdleIndicator";
 import { ServiceWorkerRegister } from "@/components/offline/ServiceWorkerRegister";
 import { StaffHost } from "@/components/staff/StaffHost";
@@ -24,6 +25,7 @@ export function KioskProviders({ children }: KioskProvidersProps) {
       <StationGate>
         <AudioLifecycleGuard />
         {children}
+        <StudioSwitcher />
         <StaffHost />
         <DevIdleIndicator />
       </StationGate>

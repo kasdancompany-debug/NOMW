@@ -64,6 +64,17 @@ export function KioskNavigationGuard({ exhibitPath, navigation }: KioskNavigatio
 
     const allowed = new Set([lockedPath, exhibitPath, ...navigation.allowedPaths]);
 
+    // Studio hop: allow any exhibit route while developing across stations.
+    let studioHop = false;
+    try {
+      studioHop =
+        new URLSearchParams(window.location.search).get("studio") === "1" ||
+        window.sessionStorage.getItem("nomow.studio.enabled") === "1";
+    } catch {
+      studioHop = false;
+    }
+    if (studioHop && pathname.startsWith("/exhibit/")) return;
+
     if (
       pathname !== lockedPath &&
       pathname !== exhibitPath &&

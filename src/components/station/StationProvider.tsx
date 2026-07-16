@@ -93,11 +93,23 @@ export function StationProvider({ children }: { children: ReactNode }) {
   }, [router, searchParams]);
 
   // Direct exhibit URL assigns on first visit; wrong exhibit bounces to assigned
+  // Studio mode (?studio=1 / session) allows free hopping across stations while developing.
   useEffect(() => {
     if (!hydrated) return;
 
     const isSimulator = searchParams.get("simulator") === "1";
     if (isSimulator) return;
+
+    const studioHop =
+      searchParams.get("studio") === "1" ||
+      (typeof window !== "undefined" &&
+        (() => {
+          try {
+            return window.sessionStorage.getItem("nomow.studio.enabled") === "1";
+          } catch {
+            return false;
+          }
+        })());
 
     const pathStation = parseStationFromPathname(pathname);
 
@@ -111,6 +123,16 @@ export function StationProvider({ children }: { children: ReactNode }) {
 
     if (pathname === "/" || pathname === "") {
       router.replace(stationExhibitPath(assignment.stationId));
+      return;
+    }
+
+    if (pathname.startsWith("/dev/")) return;
+
+    if (studioHop && pathStation) {
+      if (pathStation !== assignment.stationId) {
+        const next = saveStationAssignment(pathStation, "staff");
+        setAssignment(next);
+      }
       return;
     }
 
