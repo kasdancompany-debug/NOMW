@@ -26,7 +26,7 @@ type ForestInsightPanelProps = {
 };
 
 function StatIcon({ id }: { id: string }) {
-  const common = "mt-0.5 h-5 w-5 shrink-0 text-[var(--color-aurora-teal)]";
+  const common = "mt-0.5 h-[18px] w-[18px] shrink-0 text-[var(--color-aurora-teal)]/90";
   switch (id) {
     case "height":
       return (
@@ -59,7 +59,7 @@ function StatIcon({ id }: { id: string }) {
 }
 
 /**
- * Right insight panel — tabs, provisional stats, narrative, call / profile actions.
+ * Right insight panel — calm editorial museum panel.
  */
 export function ForestInsightPanel({
   animal,
@@ -75,10 +75,10 @@ export function ForestInsightPanel({
     animal.adaptationFacts.find((f) => f.confidence === "general-knowledge")?.text;
 
   return (
-    <section className="flex h-full w-[min(100%,26rem)] shrink-0 flex-col xl:w-[28rem]">
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-md)] border border-[rgba(111,143,94,0.32)] bg-[rgba(8,18,16,0.78)] px-[var(--space-6)] py-[var(--space-5)] shadow-[0_20px_50px_rgba(0,0,0,0.35)] backdrop-blur-[10px]">
+    <section className="flex h-full w-[min(100%,24.5rem)] shrink-0 flex-col xl:w-[26rem]">
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[var(--radius-md)] border border-white/[0.1] bg-[rgba(6,14,12,0.72)] px-[var(--space-5)] py-[var(--space-5)] backdrop-blur-[10px]">
         <div
-          className="flex flex-wrap gap-[var(--space-2)]"
+          className="flex flex-wrap gap-x-[var(--space-1)] gap-y-[var(--space-2)]"
           role="tablist"
           aria-label={`${animal.commonName} profile`}
         >
@@ -92,10 +92,10 @@ export function ForestInsightPanel({
                 role="tab"
                 aria-selected={active}
                 className={cn(
-                  "rounded-[var(--radius-sm)] px-[var(--space-4)] py-[var(--space-2)] text-[11px] tracking-[0.14em] uppercase",
+                  "rounded-[var(--radius-sm)] px-[0.85rem] py-[0.45rem] text-[10px] tracking-[0.16em] uppercase",
                   active
-                    ? "bg-[rgba(90,140,110,0.95)] text-[#0c1612]"
-                    : "bg-white/[0.05] text-[var(--text-on-dark-muted)]",
+                    ? "bg-[rgba(90,140,110,0.92)] text-[#0c1612]"
+                    : "text-white/50 hover:bg-white/[0.05] hover:text-white/75",
                 )}
                 onClick={() => onTabChange(tab.id)}
               >
@@ -105,37 +105,35 @@ export function ForestInsightPanel({
           })}
         </div>
 
-        <div className="mt-[var(--space-6)] min-h-0 flex-1 overflow-y-auto pr-1" role="tabpanel">
+        <div className="mt-[var(--space-6)] min-h-0 flex-1 overflow-y-auto" role="tabpanel">
           {activeTab === "meet" ? (
-            <div className="grid gap-[var(--space-6)] sm:grid-cols-[0.85fr_1.15fr]">
-              <ul className="space-y-[var(--space-5)]">
+            <div className="flex flex-col gap-[var(--space-6)]">
+              <ul className="grid grid-cols-2 gap-x-[var(--space-4)] gap-y-[var(--space-5)]">
                 {stats.map((stat) => (
                   <li key={stat.id} className="flex items-start gap-[var(--space-3)]">
                     <StatIcon id={stat.id} />
                     <div>
-                      <p className="text-[10px] tracking-[0.16em] text-[var(--text-on-dark-muted)] uppercase">
+                      <p className="text-[10px] tracking-[0.16em] text-white/45 uppercase">
                         {stat.label}
                       </p>
-                      <p className="mt-[var(--space-1)] text-[15px] leading-snug text-[var(--text-on-dark)]">
-                        {stat.value}
-                      </p>
+                      <p className="mt-1 text-[14px] leading-snug text-white/92">{stat.value}</p>
                     </div>
                   </li>
                 ))}
-                <li className="pt-[var(--space-1)] text-[10px] tracking-[0.08em] text-[rgba(212,176,122,0.7)] uppercase">
-                  {forestCopy.statsPending}
-                </li>
               </ul>
+              <p className="text-[10px] tracking-[0.1em] text-[rgba(212,176,122,0.55)] uppercase">
+                {forestCopy.statsPending}
+              </p>
 
-              <div>
-                <p className="text-[11px] tracking-[0.16em] text-[var(--color-aurora-teal)] uppercase">
+              <div className="border-t border-white/[0.08] pt-[var(--space-5)]">
+                <p className="text-[10px] tracking-[0.16em] text-[var(--color-aurora-teal)] uppercase">
                   {forestCopy.aboutTitle} the {animal.commonName.toLowerCase()}
                 </p>
-                <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] leading-[1.65] text-[var(--text-on-dark)]">
+                <p className="mt-[var(--space-3)] text-[14px] leading-[1.7] text-white/82">
                   {expanded ? animal.fullDescription : animal.shortIntroduction}
                 </p>
                 <QuietButton
-                  className="mt-[var(--space-3)] px-0"
+                  className="mt-[var(--space-3)] px-0 text-[13px]"
                   onClick={() =>
                     setExpanded((value) => {
                       const next = !value;
@@ -146,25 +144,24 @@ export function ForestInsightPanel({
                 >
                   {expanded ? forestCopy.showLess : forestCopy.learnMore}
                 </QuietButton>
-
-                {didYouKnow ? (
-                  <div className="mt-[var(--space-6)] rounded-[var(--radius-md)] border border-[rgba(111,143,94,0.28)] bg-[rgba(20,40,34,0.55)] px-[var(--space-4)] py-[var(--space-4)]">
-                    <p className="flex items-center gap-[var(--space-2)] text-[11px] tracking-[0.14em] text-[var(--color-museum-warm)] uppercase">
-                      <span aria-hidden>✽</span>
-                      {forestCopy.didYouKnow}
-                    </p>
-                    <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] leading-[1.65] text-[var(--text-on-dark-muted)]">
-                      {didYouKnow}
-                    </p>
-                  </div>
-                ) : null}
               </div>
+
+              {didYouKnow ? (
+                <div className="rounded-[var(--radius-sm)] border border-white/[0.08] bg-white/[0.03] px-[var(--space-4)] py-[var(--space-4)]">
+                  <p className="text-[10px] tracking-[0.16em] text-[var(--color-museum-warm)] uppercase">
+                    {forestCopy.didYouKnow}
+                  </p>
+                  <p className="mt-[var(--space-3)] text-[13px] leading-[1.65] text-white/65">
+                    {didYouKnow}
+                  </p>
+                </div>
+              ) : null}
             </div>
           ) : null}
 
           {activeTab === "size" ? (
             <SizeComparison
-              maxHeightPx={180}
+              maxHeightPx={160}
               note={forestCopy.sizeNote}
               subjects={[
                 {
@@ -178,32 +175,30 @@ export function ForestInsightPanel({
           ) : null}
 
           {activeTab === "habitat" ? (
-            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
+            <p className="max-w-[34ch] text-[15px] leading-[1.75] text-white/85">
               {content.habitatBlurb}
             </p>
           ) : null}
 
           {activeTab === "food" ? (
-            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
+            <p className="max-w-[34ch] text-[15px] leading-[1.75] text-white/85">
               {content.foodBlurb}
             </p>
           ) : null}
 
           {activeTab === "survival" ? (
-            <p className="max-w-[36ch] text-[length:var(--text-body)] leading-[1.7] text-[var(--text-on-dark)]">
+            <p className="max-w-[34ch] text-[15px] leading-[1.75] text-white/85">
               {content.survivalBlurb}
             </p>
           ) : null}
         </div>
       </div>
 
-      <div className="mt-[var(--space-5)] flex flex-col gap-[var(--space-3)] sm:flex-row sm:items-stretch">
-        <div className="min-w-0 flex-1">
-          <AnimalCallButton animal={animal} prominent />
-        </div>
+      <div className="mt-[var(--space-4)] grid grid-cols-[1.2fr_1fr] gap-[var(--space-3)]">
+        <AnimalCallButton animal={animal} prominent />
         <LargeTouchButton
           variant="secondary"
-          className="min-w-[10.5rem] border-white/15 bg-[rgba(12,22,20,0.75)]"
+          className="border-white/12 bg-[rgba(8,16,14,0.7)] text-[13px]"
           onClick={onOpenFullProfile}
         >
           {forestCopy.fullProfile} ›

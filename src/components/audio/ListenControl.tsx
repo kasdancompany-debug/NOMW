@@ -22,6 +22,8 @@ type ListenControlProps = {
   missingLabel?: string;
   volumeNote?: string;
   className?: string;
+  /** Hide the Sound · optional chip (cinematic CTAs) */
+  hideIndicator?: boolean;
 };
 
 /**
@@ -40,6 +42,7 @@ export function ListenControl({
   missingLabel = "Audio arrives with final media",
   volumeNote,
   className,
+  hideIndicator = false,
 }: ListenControlProps) {
   const { noteInteraction, updateSettings } = useKioskSession();
   const muted = useAudioStore((s) => s.muted);
@@ -73,7 +76,9 @@ export function ListenControl({
           {missing ? missingLabel : playing ? playingLabel : listenLabel}
         </LargeTouchButton>
 
-        <PlayingIndicator active={playing} muted={muted && !playing} />
+        {!hideIndicator ? (
+          <PlayingIndicator active={playing} muted={muted && !playing} />
+        ) : null}
       </div>
 
       {caption.trim() ? (

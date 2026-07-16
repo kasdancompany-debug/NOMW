@@ -6,8 +6,11 @@ import {
   FOREST_EXHIBIT_TITLE,
   forestAnimals,
   forestCopy,
-  forestSilhouetteSrc,
 } from "@/content/exhibits/forest/content";
+import {
+  AnimalSilhouette,
+  silhouetteKindFromAnimalId,
+} from "@/components/animals/AnimalSilhouette";
 import { StaffLogoHold } from "@/components/staff/StaffLogoHold";
 import { Touchable } from "@/components/touch/Touchable";
 import { cn } from "@/utils/cn";
@@ -23,26 +26,26 @@ type ForestAnimalNavProps = {
  */
 export function ForestAnimalNav({ activeIndex, onSelect, onCompare }: ForestAnimalNavProps) {
   return (
-    <aside className="flex h-full w-[16.5rem] shrink-0 flex-col border-r border-[rgba(111,143,94,0.2)] bg-[rgba(6,14,12,0.72)] px-[var(--space-5)] py-[var(--space-6)] backdrop-blur-[6px] xl:w-[18rem] xl:px-[var(--space-6)]">
-      <p className="font-[family-name:var(--font-display)] text-[length:var(--text-body-sm)] leading-snug tracking-[0.02em] text-[var(--text-on-dark)]">
+    <aside className="flex h-full w-[15.5rem] shrink-0 flex-col border-r border-white/[0.08] bg-[rgba(4,10,9,0.55)] px-[var(--space-5)] py-[var(--space-6)] backdrop-blur-[8px] xl:w-[16.5rem]">
+      <p className="font-[family-name:var(--font-display)] text-[13px] leading-snug tracking-[0.01em] text-white/90">
         <StaffLogoHold>The Northern Ontario Museum of Wonder</StaffLogoHold>
       </p>
 
-      <div className="mt-[var(--space-8)]">
-        <h1 className="font-[family-name:var(--font-ui)] text-[length:var(--text-label)] font-semibold tracking-[0.16em] text-[var(--text-on-dark)] uppercase">
+      <div className="mt-[var(--space-8)] border-t border-white/[0.08] pt-[var(--space-6)]">
+        <h1 className="font-[family-name:var(--font-ui)] text-[12px] font-semibold tracking-[0.2em] text-white/95 uppercase">
           {FOREST_EXHIBIT_TITLE}
         </h1>
-        <p className="mt-[var(--space-3)] max-w-[22ch] text-[length:var(--text-body-sm)] leading-relaxed text-[var(--text-on-dark-muted)]">
+        <p className="mt-[var(--space-3)] max-w-[20ch] text-[13px] leading-relaxed text-white/55">
           {forestCopy.navLead}
         </p>
         <p className="sr-only">{FOREST_EXHIBIT_SUBTITLE}</p>
       </div>
 
       <nav
-        className="mt-[var(--space-7)] min-h-0 flex-1 overflow-y-auto"
+        className="mt-[var(--space-6)] min-h-0 flex-1 overflow-y-auto"
         aria-label="Forest animals"
       >
-        <ul className="space-y-[var(--space-2)]">
+        <ul className="space-y-[2px]">
           {forestAnimals.map((entry, index) => {
             const animal = getAnimal(entry.animalId);
             const active = index === activeIndex;
@@ -54,26 +57,24 @@ export function ForestAnimalNav({ activeIndex, onSelect, onCompare }: ForestAnim
                   glow={!active}
                   aria-current={active ? "true" : undefined}
                   className={cn(
-                    "flex w-full items-center gap-[var(--space-4)] rounded-[var(--radius-md)] px-[var(--space-3)] py-[var(--space-3)] text-left",
+                    "flex w-full items-center gap-[var(--space-3)] rounded-[var(--radius-sm)] px-[var(--space-3)] py-[0.7rem] text-left transition-colors",
                     active
-                      ? "bg-[rgba(42,74,56,0.85)] ring-1 ring-[rgba(111,143,94,0.5)]"
+                      ? "bg-[rgba(90,140,110,0.28)]"
                       : "hover:bg-white/[0.04]",
                   )}
                   onClick={() => onSelect(index)}
                 >
-                  <span className="flex h-9 w-11 shrink-0 items-end justify-center overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={forestSilhouetteSrc(entry.animalId)}
-                      alt=""
-                      className="max-h-9 max-w-full object-contain opacity-90 brightness-0 invert"
-                      draggable={false}
+                  <span className="flex h-8 w-9 shrink-0 items-end justify-center text-white/85">
+                    <AnimalSilhouette
+                      kind={silhouetteKindFromAnimalId(entry.animalId)}
+                      compact
+                      className="h-7 text-white/90"
                     />
                   </span>
                   <span
                     className={cn(
-                      "font-[family-name:var(--font-ui)] text-[13px] tracking-[0.12em] uppercase",
-                      active ? "text-[var(--text-on-dark)]" : "text-[var(--text-on-dark-muted)]",
+                      "font-[family-name:var(--font-ui)] text-[12px] tracking-[0.14em] uppercase",
+                      active ? "text-white" : "text-white/55",
                     )}
                   >
                     {animal.commonName}
@@ -88,12 +89,9 @@ export function ForestAnimalNav({ activeIndex, onSelect, onCompare }: ForestAnim
       <Touchable
         soft
         glow
-        className="mt-[var(--space-5)] flex w-full items-center justify-center gap-[var(--space-3)] rounded-[var(--radius-md)] border border-[rgba(212,176,122,0.4)] bg-[rgba(12,24,20,0.65)] px-[var(--space-4)] py-[var(--space-4)] text-[13px] tracking-[0.14em] text-[var(--color-museum-warm)] uppercase"
+        className="mt-[var(--space-4)] flex w-full items-center justify-center gap-[var(--space-3)] rounded-[var(--radius-sm)] border border-[rgba(212,176,122,0.35)] px-[var(--space-4)] py-[0.85rem] text-[12px] tracking-[0.16em] text-[var(--color-museum-warm)] uppercase"
         onClick={onCompare}
       >
-        <span aria-hidden className="text-base opacity-80">
-          ▣▣
-        </span>
         {forestCopy.compareMode}
       </Touchable>
     </aside>

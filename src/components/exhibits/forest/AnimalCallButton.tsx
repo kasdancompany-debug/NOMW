@@ -31,9 +31,10 @@ export function AnimalCallButton({ animal, prominent = false }: AnimalCallButton
       volume={animal.callAudio.volume ?? MUSEUM_AUDIO.callVolume}
       listenLabel={forestCopy.callLabel}
       missingLabel={forestCopy.callUnavailable}
+      hideIndicator={prominent}
       className={
         prominent
-          ? "[&_button]:w-full [&_button]:border-0 [&_button]:bg-[rgba(90,140,110,0.95)] [&_button]:py-4 [&_button]:text-[#0c1612] [&_button]:shadow-none [&_.listen-meta]:hidden"
+          ? "[&_button]:w-full [&_button]:border-0 [&_button]:bg-[rgba(90,140,110,0.95)] [&_button]:py-[0.95rem] [&_button]:text-[13px] [&_button]:tracking-[0.04em] [&_button]:text-[#0c1612] [&_button]:shadow-none"
           : undefined
       }
     />

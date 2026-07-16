@@ -78,7 +78,7 @@ export function ForestExhibit() {
 
       <div className="relative z-10 flex h-full flex-col">
         {/* Leave room for shell sound / restart chrome */}
-        <div className="flex min-h-0 flex-1 pt-[var(--space-10)]">
+        <div className="flex min-h-0 flex-1 pt-[4.75rem]">
           <ForestAnimalNav
             activeIndex={index}
             onSelect={selectIndex}
@@ -88,7 +88,7 @@ export function ForestExhibit() {
             }}
           />
 
-          <div className="flex min-h-0 min-w-0 flex-1 items-stretch gap-[var(--space-8)] px-[var(--space-7)] pb-[var(--space-5)] pt-[var(--space-5)] xl:gap-[var(--space-9)] xl:px-[var(--space-8)]">
+          <div className="flex min-h-0 min-w-0 flex-1 items-stretch gap-[var(--space-8)] px-[var(--space-6)] pb-[var(--space-5)] pr-[var(--space-6)] pt-[var(--space-2)] xl:gap-[var(--space-9)] xl:px-[var(--space-8)]">
             <ForestHeroStage
               animal={animal}
               presentation={presentation}
@@ -119,13 +119,13 @@ export function ForestExhibit() {
 
         <Touchable
           soft
-          className="flex h-14 w-full items-center justify-center gap-[var(--space-3)] bg-[var(--color-museum-warm)] text-[13px] font-semibold tracking-[0.18em] text-[#1a2430] uppercase"
+          className="flex h-12 w-full items-center justify-center gap-[var(--space-3)] bg-[var(--color-museum-warm)] text-[12px] font-semibold tracking-[0.2em] text-[#1a2430] uppercase"
           onClick={() => {
             noteInteraction();
             softReset("home-control");
           }}
         >
-          <span aria-hidden className="text-base leading-none">
+          <span aria-hidden className="text-sm leading-none">
             ⌂
           </span>
           {forestCopy.backHome}

@@ -175,11 +175,14 @@ export function getForestProvisionalStats(animalId: string): ForestStatLine[] {
   );
 }
 
+/** Cache-bust silhouette cutouts when SW / CDN holds stale white-bg assets. */
+export const FOREST_SILHOUETTE_VERSION = "2";
+
 export function forestSilhouetteSrc(animalId: string): string {
-  return `/media/animals/silhouettes/${animalId}.png`;
+  return `/media/animals/silhouettes/${animalId}.png?v=${FOREST_SILHOUETTE_VERSION}`;
 }
 
-export const FOREST_HUMAN_SILHOUETTE = "/media/animals/silhouettes/human.png";
+export const FOREST_HUMAN_SILHOUETTE = `/media/animals/silhouettes/human.png?v=${FOREST_SILHOUETTE_VERSION}`;
 export const FOREST_CINEMATIC_BG = "/media/habitats/forest-cinematic-bg.png";
 
 export function getForestAnimal(animalId: AnimalId): ForestAnimalPresentation | undefined {

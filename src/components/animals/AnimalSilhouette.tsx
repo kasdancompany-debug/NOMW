@@ -17,13 +17,20 @@ type AnimalSilhouetteProps = {
   className?: string;
   /** Fill uses currentColor */
   prominent?: boolean;
+  /** Hide placeholder caption — for compact nav / chrome icons */
+  compact?: boolean;
 };
 
 /**
  * Stylized species silhouettes for MVP scale + presence.
  * Replace with photographic cutouts / illustrated finals later — keep relative scale via height.
  */
-export function AnimalSilhouette({ kind, className, prominent = true }: AnimalSilhouetteProps) {
+export function AnimalSilhouette({
+  kind,
+  className,
+  prominent = true,
+  compact = false,
+}: AnimalSilhouetteProps) {
   return (
     <svg
       viewBox="0 0 200 220"
@@ -36,7 +43,7 @@ export function AnimalSilhouette({ kind, className, prominent = true }: AnimalSi
       aria-hidden
     >
       <path d={pathFor(kind)} fill="currentColor" />
-      {kind !== "human" ? (
+      {!compact && kind !== "human" ? (
         <text
           x="100"
           y="214"
