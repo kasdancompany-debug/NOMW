@@ -43,19 +43,6 @@ export function AnimalSilhouette({
       aria-hidden
     >
       <path d={pathFor(kind)} fill="currentColor" />
-      {!compact && kind !== "human" ? (
-        <text
-          x="100"
-          y="214"
-          textAnchor="middle"
-          fill="rgba(212,176,122,0.55)"
-          fontSize="9"
-          letterSpacing="1.2"
-          style={{ fontFamily: "var(--font-museum-body)" }}
-        >
-          PLACEHOLDER SILHOUETTE
-        </text>
-      ) : null}
     </svg>
   );
 }

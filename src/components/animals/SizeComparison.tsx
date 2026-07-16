@@ -6,8 +6,12 @@ import {
   silhouetteKindFromAnimalId,
   type SilhouetteKind,
 } from "@/components/animals/AnimalSilhouette";
-import { forestSilhouetteSrc } from "@/content/exhibits/forest/content";
-import { HUMAN_RELATIVE_HEIGHT } from "@/content/exhibits/forest/content";
+import {
+  forestBodyProportion,
+  forestSilhouetteDisplayHeight,
+  forestSilhouetteSrc,
+  HUMAN_RELATIVE_HEIGHT,
+} from "@/content/exhibits/forest/content";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { scenicTransition } from "@/lib/motion/tokens";
 import { cn } from "@/utils/cn";
@@ -15,8 +19,13 @@ import { cn } from "@/utils/cn";
 export type SizeSubject = {
   id: string;
   label: string;
-  /** 0–1 relative to tallest subject in the set */
+  /** Shoulder / withers height relative to standing adult human (= 1.0) */
   relativeHeight: number;
+  /**
+   * Fraction of silhouette art from ground to withers.
+   * Antlered species are < 1 so antlers can extend above the shoulder line.
+   */
+  bodyProportion?: number;
   variant?: "animal" | "human";
 };
 
@@ -25,7 +34,7 @@ type SizeComparisonProps = {
   /** Optional note under the stage */
   note?: string;
   className?: string;
-  /** Baseline height of the tallest silhouette in CSS */
+  /** Baseline height of a standing adult human in CSS px */
   maxHeightPx?: number;
 };
 
@@ -38,27 +47,43 @@ const FOREST_IDS = new Set([
   "canada-lynx",
 ]);
 
+function subjectDisplayHeight(subject: SizeSubject, stagePx: number): number {
+  if (subject.variant === "human") {
+    return Math.max(48, subject.relativeHeight * stagePx);
+  }
+  const proportion =
+    subject.bodyProportion ??
+    (FOREST_IDS.has(subject.id) ? forestBodyProportion(subject.id) : 1);
+  return forestSilhouetteDisplayHeight(subject.relativeHeight, proportion, stagePx);
+}
+
 /**
  * Relative silhouette stage for communicating real-world scale.
- * Always keeps figures on one shared baseline — tallest first left-to-right after sort.
+ * Human standing height = 1.0; animal values are shoulder/withers height.
  */
 export function SizeComparison({
   subjects,
   note,
   className,
-  maxHeightPx = 280,
+  maxHeightPx = 160,
 }: SizeComparisonProps) {
   const reducedMotion = useReducedMotion();
+  // Human is the fixed reference; antlers may extend above maxHeightPx.
+  const stagePx = maxHeightPx;
+  const tallest = Math.max(
+    ...subjects.map((subject) => subjectDisplayHeight(subject, stagePx)),
+    stagePx,
+  );
   const ordered = [...subjects].sort((a, b) => b.relativeHeight - a.relativeHeight);
 
   return (
     <div className={cn("w-full", className)}>
       <div
         className="relative flex items-end justify-center gap-[var(--space-6)] border-b border-white/10 px-[var(--space-3)] pb-0"
-        style={{ minHeight: maxHeightPx + 48 }}
+        style={{ minHeight: tallest + 48 }}
       >
         {ordered.map((subject, index) => {
-          const height = Math.max(48, subject.relativeHeight * maxHeightPx);
+          const height = subjectDisplayHeight(subject, stagePx);
           const isHuman = subject.variant === "human";
           const kind: SilhouetteKind = isHuman
             ? "human"
@@ -129,6 +154,7 @@ export function humanSizeSubject(label = "Human"): SizeSubject {
     id: "human",
     label,
     relativeHeight: HUMAN_RELATIVE_HEIGHT,
+    bodyProportion: 1,
     variant: "human",
   };
 }

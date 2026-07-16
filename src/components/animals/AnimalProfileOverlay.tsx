@@ -206,7 +206,7 @@ export function AnimalProfileOverlay() {
                       label="Diet"
                       value={
                         animal.diet.status === "placeholder"
-                          ? "Seasonal omnivore — details under curator review"
+                          ? "Seasonal omnivore — habits shift with the year"
                           : animal.diet.text
                       }
                     />
@@ -228,7 +228,7 @@ export function AnimalProfileOverlay() {
 
                   <SizeComparison
                     maxHeightPx={110}
-                    note="Relative silhouettes for feeling scale — not certified measures"
+                    note="Relative silhouettes for feeling scale"
                     subjects={[
                       {
                         id: animal.id,

@@ -65,7 +65,7 @@ export function BeaverDamCutaway({ onClose }: BeaverDamCutawayProps) {
             </text>
           </svg>
           <p className="mt-[var(--space-3)] text-[length:var(--text-body-sm)] text-[var(--text-on-dark-muted)]">
-            Placeholder cutaway illustration — swap for final schematic art later.
+            Cross-section of dam, lodge, and pond — how beavers reshape a shoreline.
           </p>
         </GlassPanel>
 

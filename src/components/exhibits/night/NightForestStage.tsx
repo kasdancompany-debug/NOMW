@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { PlaceholderBadge } from "@/components/media/PlaceholderBadge";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/utils/cn";
 
@@ -10,7 +9,7 @@ type NightForestStageProps = {
 };
 
 /**
- * Nearly black forest MVP stage — moonlight, canopy layers, labelled placeholder plate.
+ * Nearly black forest stage — moonlight and canopy layers for the night beam.
  */
 export function NightForestStage({ nightVision }: NightForestStageProps) {
   const reducedMotion = useReducedMotion();
@@ -70,8 +69,6 @@ export function NightForestStage({ nightVision }: NightForestStageProps) {
           transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
         />
       ) : null}
-
-      <PlaceholderBadge label="Night canopy still · WebP plate (beam interaction overlaid)" />
     </div>
   );
 }

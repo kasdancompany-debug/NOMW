@@ -48,10 +48,7 @@ export function MeetAnimalsSequence({
       exit={{ opacity: 0 }}
       transition={scenicTransition(reducedMotion)}
     >
-      <LayeredLandscape
-        tone="welcome-dawn"
-        badgeLabel="Animal portrait plate · WebP (silhouette stand-in)"
-      />
+      <LayeredLandscape tone="welcome-dawn" />
       <div className="pointer-events-none absolute inset-0 bg-[rgba(8,16,20,0.45)]" />
       <div className="safe-frame relative flex h-full flex-col justify-between">
         <div className="flex items-start justify-between gap-[var(--space-6)]">

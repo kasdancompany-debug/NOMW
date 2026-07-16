@@ -171,6 +171,7 @@ export function ForestInsightPanel({
                   id: animal.id,
                   label: animal.commonName,
                   relativeHeight: content.relativeHeight,
+                  bodyProportion: content.bodyProportion,
                 },
                 humanSizeSubject(),
               ]}

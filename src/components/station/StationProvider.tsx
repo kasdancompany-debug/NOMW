@@ -48,8 +48,9 @@ function BootPlaceholder({ message }: { message: string }) {
 
 /**
  * Station awareness without locking guests into one exhibit.
- * Physical screens can still boot to a preferred route via URL / ?station=;
- * visitors may freely open any /exhibit/* destination.
+ * Cold boot `/` → Welcome (shared start). Workers open each TV’s area via
+ * `/exhibit/{id}`, `?station=`, or Launch-Station -Direct. Visitors may
+ * freely open any /exhibit/* destination.
  */
 export function StationProvider({ children }: { children: ReactNode }) {
   const router = useRouter();

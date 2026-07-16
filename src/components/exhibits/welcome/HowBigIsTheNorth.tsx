@@ -28,7 +28,7 @@ export function HowBigIsTheNorth({ onBack, onContinue }: HowBigIsTheNorthProps) 
       exit={{ opacity: 0 }}
       transition={scenicTransition(reducedMotion)}
     >
-      <LayeredLandscape tone="habitat-lake" badgeLabel="Scale diagram bed · illustrative only" />
+      <LayeredLandscape tone="habitat-lake" showBadge={false} />
       <div className="pointer-events-none absolute inset-0 bg-[rgba(6,16,24,0.5)]" />
       <div className="safe-frame relative flex h-full flex-col justify-between">
         <div className="flex items-start justify-between gap-[var(--space-6)]">
@@ -53,11 +53,6 @@ export function HowBigIsTheNorth({ onBack, onContinue }: HowBigIsTheNorthProps) 
                 <p className="font-[family-name:var(--font-display)] text-[length:var(--text-title)] text-[var(--text-on-dark)]">
                   {item.label}
                 </p>
-                {item.confidence === "needs-research" ? (
-                  <p className="text-[length:var(--text-micro)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">
-                    Awaiting curator figures
-                  </p>
-                ) : null}
               </div>
               <div className="h-14 w-full overflow-hidden rounded-[var(--radius-sm)] bg-[rgba(238,243,246,0.08)]">
                 <motion.div

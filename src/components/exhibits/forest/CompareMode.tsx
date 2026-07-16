@@ -7,6 +7,7 @@ import {
   HUMAN_RELATIVE_HEIGHT,
   forestAnimals,
   forestCopy,
+  forestSilhouetteDisplayHeight,
   forestSilhouetteSrc,
 } from "@/content/exhibits/forest/content";
 import { ForestStage } from "@/components/exhibits/forest/ForestStage";
@@ -61,14 +62,16 @@ function AnimalChip({
 function CompareFigure({
   animalId,
   relativeHeight,
+  bodyProportion = 1,
   stagePx,
 }: {
   animalId: AnimalId;
   relativeHeight: number;
+  bodyProportion?: number;
   stagePx: number;
 }) {
   const animal = getAnimal(animalId);
-  const height = Math.max(72, relativeHeight * stagePx);
+  const height = forestSilhouetteDisplayHeight(relativeHeight, bodyProportion, stagePx);
   return (
     <div className="flex min-w-0 flex-1 flex-col items-center justify-end">
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -107,7 +110,8 @@ export function CompareMode({
   const reducedMotion = useReducedMotion();
   const left = forestAnimals.find((a) => a.animalId === leftId);
   const right = forestAnimals.find((a) => a.animalId === rightId);
-  const stagePx = 280;
+  // Human standing height is the 1.0 reference; stage fits human + taller moose antlers.
+  const stagePx = 220;
   const humanPx = HUMAN_RELATIVE_HEIGHT * stagePx;
   const ready = Boolean(left && right);
 
@@ -183,6 +187,7 @@ export function CompareMode({
               <CompareFigure
                 animalId={left.animalId}
                 relativeHeight={left.relativeHeight}
+                bodyProportion={left.bodyProportion}
                 stagePx={stagePx}
               />
 
@@ -207,6 +212,7 @@ export function CompareMode({
               <CompareFigure
                 animalId={right.animalId}
                 relativeHeight={right.relativeHeight}
+                bodyProportion={right.bodyProportion}
                 stagePx={stagePx}
               />
             </div>

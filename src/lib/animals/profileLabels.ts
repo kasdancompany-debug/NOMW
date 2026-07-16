@@ -20,35 +20,35 @@ export function formatConservationStatus(status: ConservationStatus): string {
     case "not-evaluated-placeholder":
       return "Not evaluated yet";
     case "least-concern-placeholder":
-      return "Least concern (pending confirm)";
+      return "Least concern";
     case "special-concern-placeholder":
-      return "Special concern (pending confirm)";
+      return "Special concern";
     case "threatened-placeholder":
-      return "Threatened (pending confirm)";
+      return "Threatened";
     case "endangered-placeholder":
-      return "Endangered (pending confirm)";
+      return "Endangered";
     case "extirpated-placeholder":
-      return "Extirpated (pending confirm)";
+      return "Extirpated";
     default:
       return "Under review";
   }
 }
 
-/** Soft relative height cue for silhouette stage — not a verified metric. */
+/** Soft relative height cue — aligned with forest shoulder-vs-human scale (human = 1). */
 export function relativeHeightForAnimal(animalId: string, group: string): number {
   const known: Record<string, number> = {
-    moose: 1,
-    "woodland-caribou": 0.72,
-    "white-tailed-deer": 0.62,
-    "black-bear": 0.7,
-    "grey-wolf": 0.48,
-    "canada-lynx": 0.38,
-    "red-fox": 0.32,
-    beaver: 0.28,
-    "river-otter": 0.3,
-    "snowshoe-hare": 0.22,
+    moose: 1.15,
+    "woodland-caribou": 0.65,
+    "white-tailed-deer": 0.56,
+    "black-bear": 0.53,
+    "grey-wolf": 0.47,
+    "canada-lynx": 0.32,
+    "red-fox": 0.28,
+    beaver: 0.22,
+    "river-otter": 0.24,
+    "snowshoe-hare": 0.18,
     "bald-eagle": 0.45,
-    "sandhill-crane": 0.55,
+    "sandhill-crane": 0.7,
     "great-grey-owl": 0.4,
     "common-loon": 0.35,
     "lake-sturgeon": 0.5,

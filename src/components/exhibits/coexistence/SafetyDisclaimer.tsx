@@ -17,7 +17,7 @@ type SafetyDisclaimerProps = {
  * Surfaces visitor-facing context plus the emergency-content disclaimer field
  * reserved for qualified local wildlife authority review before installation.
  */
-export function SafetyDisclaimer({ className, showReviewField = true }: SafetyDisclaimerProps) {
+export function SafetyDisclaimer({ className, showReviewField = false }: SafetyDisclaimerProps) {
   return (
     <GlassPanel density="dense" className={cn("max-w-md space-y-[var(--space-2)] py-[var(--space-4)]", className)}>
       <p className="text-[length:var(--text-label)] tracking-[var(--tracking-label)] text-[var(--color-museum-warm)] uppercase">

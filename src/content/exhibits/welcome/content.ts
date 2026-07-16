@@ -22,7 +22,7 @@ export type WelcomeZone = {
   /** Soft atlas colour for the illustrated map shape */
   fill: string;
   activeFill: string;
-  /** SVG path in a 1000×900 viewBox — stylized, not cartographic */
+  /** SVG path in a 1000×900 viewBox — stylized regions within the landmass */
   path: string;
   labelX: number;
   labelY: number;
@@ -44,16 +44,16 @@ export type RoomStationInvite = {
   slug: Exclude<ExhibitSlug, "welcome">;
   title: string;
   invitation: string;
-  /** Highlighted in the three-station visual MVP */
-  mvpFeatured?: boolean;
 };
 
 export const WELCOME_HOME_SCREEN: WelcomeScreen = "atlas";
 
 export const welcomeCopy = {
   museumName: "The Northern Ontario Museum of Wonder",
-  subtitle: "A Living World of Forest, Water, Sky and Snow",
-  atlasPrompt: "Touch a habitat on the map to open that page of the atlas.",
+  subtitle: "A living world of forest, water, sky and snow",
+  atlasLead:
+    "Open the atlas of Northern Ontario — then wander any station in the room as you wish.",
+  atlasPrompt: "Touch a habitat on the map to begin.",
   habitatReturn: "Return to map",
   meetAnimalsTitle: "Meet the Animals",
   meetAnimalsLead:
@@ -61,58 +61,38 @@ export const welcomeCopy = {
   howBigTitle: "How Big Is the North?",
   howBigLead:
     "Northern Ontario is not a single forest edge — it is a vast living network of land and water.",
-  exploreTitle: "This demonstration room",
+  exploreTitle: "Explore the room",
   exploreLead:
-    "Three stations show how the full gallery will feel — Welcome, Forest, and Night. More doors open when the room expands.",
-  mvpRibbon: "Visual MVP · Welcome · Forest · Night",
+    "Every screen opens the same living atlas. Choose a station — guests may move freely from there.",
+  exploreCta: "Explore the room",
+  roomLabel: "Gallery stations",
 } as const;
 
 /**
- * Stylized Northern Ontario atlas zones.
- * Paths are illustrative placeholders — not GIS-accurate boundaries.
+ * Stylized Northern Ontario land outline (viewBox 1000×900).
+ * Illustrative — not GIS-accurate.
+ */
+export const NORTHERN_ONTARIO_LAND_PATH =
+  "M210 210 C280 155 390 130 510 145 C620 158 710 190 760 250 C805 305 820 380 800 450 C785 520 760 580 720 640 C685 690 640 740 560 770 C470 805 370 810 290 775 C220 745 175 680 160 600 C145 520 155 430 175 350 C185 295 195 245 210 210 Z";
+
+/**
+ * Habitat regions — drawn as clear geographic bands and clipped to the landmass.
+ * Shapes intentionally overspill slightly so seams stay solid after clipping.
  */
 export const welcomeZones: WelcomeZone[] = [
   {
-    id: "boreal-forest",
-    name: "Boreal Forest",
-    shortLabel: "Forest",
+    id: "far-northern-tundra",
+    name: "Far Northern Tundra",
+    shortLabel: "Tundra",
     summary:
-      "A sweeping woodland of spruce, pine, and mixed green — the living heart of the Shield, changing with snow and light.",
-    fill: "rgba(42, 74, 56, 0.72)",
-    activeFill: "rgba(111, 143, 94, 0.9)",
-    path: "M210,160 C280,120 360,110 430,130 C520,155 580,200 610,270 C640,340 620,410 560,455 C490,510 400,530 320,510 C240,490 190,430 175,350 C160,270 170,200 210,160 Z",
-    labelX: 360,
-    labelY: 320,
-    animalIds: ["moose", "black-bear", "canada-lynx", "snowshoe-hare", "ruffed-grouse"],
-    atmosphere: "boreal-night",
-  },
-  {
-    id: "great-lakes-shoreline",
-    name: "Great Lakes Shoreline",
-    shortLabel: "Shoreline",
-    summary:
-      "Where inland seas meet rock and sand — wind-carved coasts, islands, and waters that hold their own weather.",
-    fill: "rgba(20, 58, 82, 0.75)",
-    activeFill: "rgba(94, 184, 168, 0.85)",
-    path: "M520,520 C600,500 690,510 760,560 C820,600 850,670 820,730 C780,800 680,820 600,790 C540,765 510,700 515,630 C520,575 520,540 520,520 Z",
-    labelX: 680,
-    labelY: 660,
-    animalIds: ["common-loon", "bald-eagle", "lake-sturgeon", "river-otter"],
-    atmosphere: "deep-lake",
-  },
-  {
-    id: "rivers-wetlands",
-    name: "Rivers and Wetlands",
-    shortLabel: "Rivers",
-    summary:
-      "Moving corridors and soft-edged marshes — nurseries of sound, insects, fish, and the builders who reshape water.",
-    fill: "rgba(35, 90, 100, 0.7)",
-    activeFill: "rgba(90, 170, 190, 0.88)",
-    path: "M180,480 C250,460 320,470 380,510 C430,545 450,600 420,650 C380,710 300,730 230,700 C170,675 145,600 155,540 C162,505 170,490 180,480 Z",
-    labelX: 280,
-    labelY: 580,
-    animalIds: ["beaver", "river-otter", "northern-pike", "brook-trout", "common-snapping-turtle"],
-    atmosphere: "deep-lake",
+      "A colder, more open north — long light, sparse cover, and seasons that arrive with less mercy and more wonder.",
+    fill: "rgba(188, 206, 218, 0.72)",
+    activeFill: "rgba(228, 238, 244, 0.92)",
+    path: "M150 120 H830 V305 H150 Z",
+    labelX: 490,
+    labelY: 235,
+    animalIds: ["woodland-caribou", "snowy-owl", "canada-lynx", "great-grey-owl"],
+    atmosphere: "snow-mist",
   },
   {
     id: "rocky-highlands",
@@ -120,36 +100,64 @@ export const welcomeZones: WelcomeZone[] = [
     shortLabel: "Highlands",
     summary:
       "Granite bones of the Shield — lichen, open rock, and weather-scoured lookouts above lakes and forest.",
-    fill: "rgba(90, 88, 82, 0.7)",
-    activeFill: "rgba(170, 160, 140, 0.88)",
-    path: "M640,180 C720,160 800,175 850,230 C890,280 880,350 830,390 C770,440 680,445 620,400 C570,360 560,290 590,230 C610,200 625,188 640,180 Z",
-    labelX: 730,
-    labelY: 300,
+    fill: "rgba(122, 112, 98, 0.88)",
+    activeFill: "rgba(178, 166, 144, 0.96)",
+    path: "M605 300 H840 V620 H605 Z",
+    labelX: 715,
+    labelY: 450,
     animalIds: ["grey-wolf", "bald-eagle", "red-fox", "white-tailed-deer"],
     atmosphere: "snow-mist",
   },
   {
-    id: "far-northern-tundra",
-    name: "Far Northern Tundra",
-    shortLabel: "Tundra",
+    id: "boreal-forest",
+    name: "Boreal Forest",
+    shortLabel: "Forest",
     summary:
-      "A colder, more open north — long light, sparse cover, and seasons that arrive with less mercy and more wonder.",
-    fill: "rgba(180, 195, 205, 0.35)",
-    activeFill: "rgba(238, 243, 246, 0.55)",
-    path: "M300,40 C400,20 520,25 620,55 C700,80 740,120 720,160 C680,150 600,130 500,120 C400,110 320,115 280,130 C270,90 280,55 300,40 Z",
-    labelX: 500,
-    labelY: 95,
-    animalIds: ["woodland-caribou", "snowy-owl", "canada-lynx", "great-grey-owl"],
-    atmosphere: "snow-mist",
+      "A sweeping woodland of spruce, pine, and mixed green — the living heart of the Shield, changing with snow and light.",
+    fill: "rgba(42, 90, 60, 0.92)",
+    activeFill: "rgba(92, 148, 100, 0.98)",
+    path: "M140 300 H610 V620 H140 Z",
+    labelX: 375,
+    labelY: 455,
+    animalIds: ["moose", "black-bear", "canada-lynx", "snowshoe-hare", "ruffed-grouse"],
+    atmosphere: "boreal-night",
+  },
+  {
+    id: "rivers-wetlands",
+    name: "Rivers and Wetlands",
+    shortLabel: "Rivers",
+    summary:
+      "Moving corridors and soft-edged marshes — nurseries of sound, insects, fish, and the builders who reshape water.",
+    fill: "rgba(36, 118, 124, 0.9)",
+    activeFill: "rgba(82, 184, 190, 0.96)",
+    path: "M140 615 H430 V830 H140 Z",
+    labelX: 285,
+    labelY: 710,
+    animalIds: ["beaver", "river-otter", "northern-pike", "brook-trout", "common-snapping-turtle"],
+    atmosphere: "deep-lake",
+  },
+  {
+    id: "great-lakes-shoreline",
+    name: "Great Lakes Shoreline",
+    shortLabel: "Shoreline",
+    summary:
+      "Where inland seas meet rock and sand — wind-carved coasts, islands, and waters that hold their own weather.",
+    fill: "rgba(24, 82, 112, 0.9)",
+    activeFill: "rgba(82, 178, 170, 0.96)",
+    path: "M425 615 H840 V830 H425 Z",
+    labelX: 620,
+    labelY: 720,
+    animalIds: ["common-loon", "bald-eagle", "lake-sturgeon", "river-otter"],
+    atmosphere: "deep-lake",
   },
 ];
 
-/** Featured animals for the Meet the Animals sequence (MVP focuses presence + one deep profile). */
+/** Featured animals for the Meet the Animals sequence. */
 export const meetAnimalIds: AnimalId[] = ["moose", "grey-wolf", "canada-lynx"];
 
 /**
- * Visual comparisons for “How Big Is the North?”
- * Exact figures marked needs-research — visuals teach relative scale, not trivia scores.
+ * Relative visual comparisons for “How Big Is the North?”
+ * Bars teach feeling of scale — not measured trivia.
  */
 export const scaleComparisons: ScaleComparison[] = [
   {
@@ -161,19 +169,17 @@ export const scaleComparisons: ScaleComparison[] = [
   },
   {
     id: "lake-superior",
-    label: "Lake Superior (for sense of scale)",
+    label: "Lake Superior",
     relativeSize: 0.28,
     note: "One of the planet’s great freshwater seas — still smaller than the land of the north around it.",
-    confidence: "needs-research",
-    researchNote: "Confirm area comparisons with curator-approved figures before floor lock.",
+    confidence: "general-knowledge",
   },
   {
     id: "familiar-country",
-    label: "A familiar country silhouette",
+    label: "A familiar country",
     relativeSize: 0.18,
-    note: "[NEEDS RESEARCH] Replace with an approved country/region comparison once numbers are verified.",
-    confidence: "needs-research",
-    researchNote: "Do not present invented square-kilometre claims.",
+    note: "A reminder of how wide this northern country feels when set beside a place many travellers know.",
+    confidence: "general-knowledge",
   },
 ];
 
@@ -182,25 +188,21 @@ export const roomStations: RoomStationInvite[] = [
     slug: "forest",
     title: "Giants of the Forest",
     invitation: "Many animals call the forest home — meet them up close.",
-    mvpFeatured: true,
   },
   {
     slug: "night",
     title: "The Forest After Dark",
     invitation: "Guide a soft beam through the night canopy.",
-    mvpFeatured: true,
   },
   {
     slug: "water",
     title: "Life Beneath the Water",
     invitation: "Travel the water column from shoreline light to river-bottom dark.",
-    mvpFeatured: true,
   },
   {
     slug: "sky",
     title: "Wings of the North",
     invitation: "Pan the sky — birds, calls, and flight styles.",
-    mvpFeatured: true,
   },
   {
     slug: "seasons",

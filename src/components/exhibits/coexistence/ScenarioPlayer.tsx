@@ -164,14 +164,6 @@ export function ScenarioPlayer({
                       Thanks for thinking it through — here’s a steadier option that often works well outdoors.
                     </p>
                   ) : null}
-
-                  {/* Per-scenario authority review field */}
-                  <p
-                    className="rounded-[var(--radius-sm)] bg-white/5 p-[var(--space-3)] text-[length:var(--text-micro)] text-[var(--text-on-dark-muted)]"
-                    data-emergency-content-disclaimer={scenario.emergencyContentDisclaimer}
-                  >
-                    {scenario.emergencyContentDisclaimer}
-                  </p>
                 </GlassPanel>
               </Reveal>
 

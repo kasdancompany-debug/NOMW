@@ -18,13 +18,13 @@ type LayeredLandscapeProps = {
 };
 
 /**
- * High-quality CSS/SVG layered landscape beds for the three-station visual MVP.
- * Finals replace these with photography / video under the same composition.
+ * High-quality CSS/SVG layered landscape beds for exhibit atmospheres.
+ * Photography / video can replace these under the same composition.
  */
 export function LayeredLandscape({
   tone,
   className,
-  showBadge = true,
+  showBadge = false,
   badgeLabel,
   animate = true,
 }: LayeredLandscapeProps) {

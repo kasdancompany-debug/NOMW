@@ -17,6 +17,7 @@ export type AnimalProfileContent = {
   foodBlurb: string;
   survivalBlurb: string;
   relativeHeight: number;
+  bodyProportion?: number;
 };
 
 type AnimalProfilePanelProps = {
@@ -144,6 +145,7 @@ export function AnimalProfilePanel({
                 id: animal.id,
                 label: animal.commonName,
                 relativeHeight: content.relativeHeight,
+                bodyProportion: content.bodyProportion,
               },
               humanSizeSubject(),
             ]}
@@ -165,9 +167,7 @@ export function AnimalProfilePanel({
           <FactBlock
             primary={content.foodBlurb}
             expandedCopy={
-              animal.diet.status === "placeholder"
-                ? `${animal.diet.text} — ${animal.diet.researchNote}`
-                : animal.diet.text
+              animal.diet.text
             }
           />
         ) : null}

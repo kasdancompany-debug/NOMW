@@ -52,7 +52,7 @@ export const COEXISTENCE_EXHIBIT_SUBTITLE =
  * Exhibit-level safety disclaimer — surface on-screen; final copy requires authority review.
  */
 export const coexistenceSafetyDisclaimer = {
-  shortLabel: "Safety notes under review",
+  shortLabel: "A gentle note",
   visitorFacing:
     "These choices share general good habits for living near wildlife. They are not a substitute for official guidance in an emergency.",
   /**

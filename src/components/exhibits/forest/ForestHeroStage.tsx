@@ -4,7 +4,6 @@ import { AnimatePresence, motion, useMotionValue, animate } from "framer-motion"
 import type { Animal } from "@/types/content";
 import {
   FOREST_HUMAN_SILHOUETTE,
-  HUMAN_RELATIVE_HEIGHT,
   forestCopy,
   forestSilhouetteSrc,
   type ForestAnimalPresentation,
@@ -35,7 +34,13 @@ export function ForestHeroStage({
 }: ForestHeroStageProps) {
   const reducedMotion = useReducedMotion();
   const x = useMotionValue(0);
-  const scale = presentation.relativeHeight;
+  // Human standing height is the shared % reference; animal art is sized so
+  // withers land at relativeHeight (antlers may extend above via bodyProportion).
+  const humanStagePct = 52;
+  const bodyProportion = presentation.bodyProportion ?? 1;
+  const animalStagePct =
+    (presentation.relativeHeight / Math.min(1, Math.max(0.35, bodyProportion))) *
+    humanStagePct;
 
   const go = (next: number) => {
     onIndexChange(Math.min(count - 1, Math.max(0, next)));
@@ -89,7 +94,7 @@ export function ForestHeroStage({
                   alt=""
                   className="absolute bottom-0 left-[54%] w-auto max-w-[86%] -translate-x-1/2 object-contain object-bottom"
                   style={{
-                    height: `${Math.round(Math.min(scale, 1) * 78)}%`,
+                    height: `${Math.round(animalStagePct)}%`,
                     opacity: 0.94,
                     filter:
                       "brightness(0) invert(1) drop-shadow(0 0 22px rgba(160,210,180,0.4)) drop-shadow(0 16px 28px rgba(0,0,0,0.45))",
@@ -99,7 +104,7 @@ export function ForestHeroStage({
 
                 <div
                   className="absolute bottom-0 left-[8%] flex items-end"
-                  style={{ height: `${Math.round(HUMAN_RELATIVE_HEIGHT * 78)}%` }}
+                  style={{ height: `${humanStagePct}%` }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img

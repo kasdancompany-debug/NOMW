@@ -150,7 +150,7 @@ export function AttractMode({
                 <LayeredLandscape
                   tone={landscapeToneForAttract(content)}
                   animate={!reducedMotion}
-                  badgeLabel={`Attract bed · ${content.title}`}
+                  showBadge={false}
                 />
               )}
             </motion.div>

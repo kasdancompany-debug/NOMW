@@ -30,7 +30,10 @@ function SilhouetteCard({
   prominent: boolean;
 }) {
   const animal = getAnimal(presentation.animalId);
-  const height = Math.max(96, presentation.relativeHeight * 340);
+  const height = Math.max(
+    96,
+    ((presentation.relativeHeight / (presentation.bodyProportion ?? 1)) * 200),
+  );
 
   return (
     <div className="flex flex-col items-center gap-[var(--space-4)]">

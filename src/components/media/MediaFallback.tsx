@@ -14,7 +14,7 @@ type MediaFallbackProps = {
  */
 export function MediaFallback({
   className,
-  label = "Media arrives with final install",
+  label = "Media unavailable",
 }: MediaFallbackProps) {
   return (
     <div

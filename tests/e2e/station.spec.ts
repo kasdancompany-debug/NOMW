@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { STATION_STORAGE_KEY, seedKioskSettings } from "./helpers/kiosk";
 
 test.describe("station assignment", () => {
-  test("?station= assigns and persists across navigation bounce", async ({ page }) => {
+  test("?station= assigns and opens that exhibit; guests may leave freely", async ({ page }) => {
     await seedKioskSettings(page, {
       forceReducedMotion: true,
       inactivityTimeoutMs: 120_000,
@@ -17,12 +17,12 @@ test.describe("station assignment", () => {
     expect(stored).toBeTruthy();
     expect(JSON.parse(stored!).stationId).toBe("sky");
 
-    // Casual cross-station navigation must bounce back to assigned exhibit.
+    // Free navigation — no bounce back to assigned exhibit.
     await page.goto("/exhibit/forest");
-    await expect(page).toHaveURL(/\/exhibit\/sky/, { timeout: 10_000 });
+    await expect(page).toHaveURL(/\/exhibit\/forest/, { timeout: 10_000 });
   });
 
-  test("stored assignment restores on cold visit to /", async ({ page }) => {
+  test("cold visit to / always opens Welcome", async ({ page }) => {
     await seedKioskSettings(page, {
       forceReducedMotion: true,
       inactivityTimeoutMs: 120_000,
@@ -39,6 +39,6 @@ test.describe("station assignment", () => {
     );
 
     await page.goto("/");
-    await expect(page).toHaveURL(/\/exhibit\/water/, { timeout: 10_000 });
+    await expect(page).toHaveURL(/\/exhibit\/welcome/, { timeout: 10_000 });
   });
 });

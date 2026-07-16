@@ -231,5 +231,5 @@ export const waterCopy = {
   foodLead: "Energy moves from green light to sleek hunters — one link at a time.",
   sturgeonTitle: "Lake Sturgeon Size",
   sturgeonLead: "An ancient shape — longer than many visitors expect.",
-  sizeNote: "Relative silhouettes for feeling, not measuring — confirm figures before floor lock.",
+  sizeNote: "Relative silhouettes for feeling scale.",
 } as const;

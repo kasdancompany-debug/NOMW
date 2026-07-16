@@ -24,7 +24,7 @@ import { scenicTransition } from "@/lib/motion/tokens";
 import type { AnimalId } from "@/types/content";
 
 /**
- * Welcome station: illustrated atlas of Northern Ontario habitats and wonder.
+ * Welcome — shared gallery home. Atlas first; free paths into every station.
  */
 export function WelcomeExhibit() {
   const reducedMotion = useReducedMotion();
@@ -60,12 +60,10 @@ export function WelcomeExhibit() {
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <LayeredLandscape
-        tone="welcome-dawn"
-        className="opacity-95"
-        badgeLabel="Welcome atlas environment · WebP plate"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(8,16,20,0.72)_0%,rgba(8,16,20,0.35)_48%,rgba(8,16,20,0.2)_100%)]" />
+      <LayeredLandscape tone="welcome-dawn" className="opacity-95" showBadge={false} />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,14,18,0.78)_0%,rgba(6,14,18,0.42)_42%,rgba(6,14,18,0.18)_72%,rgba(6,14,18,0.28)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_40%,rgba(120,180,160,0.12)_0%,transparent_55%)]" />
+
       <AnimatePresence mode="wait">
         {screen === "atlas" ? (
           <motion.div
@@ -76,23 +74,24 @@ export function WelcomeExhibit() {
             exit={{ opacity: 0 }}
             transition={scenicTransition(reducedMotion)}
           >
-            <div className="safe-frame grid h-full grid-cols-1 gap-[var(--space-6)] lg:grid-cols-[minmax(22rem,0.9fr)_minmax(0,1.25fr)] lg:gap-[var(--space-8)]">
-              <div className="flex flex-col justify-end pb-[var(--space-4)] lg:justify-center lg:pb-0">
-                <p className="mb-[var(--space-4)] text-[10px] tracking-[0.18em] text-[rgba(212,176,122,0.85)] uppercase">
-                  {welcomeCopy.mvpRibbon}
-                </p>
+            <div className="safe-frame grid h-full grid-cols-1 gap-[var(--space-6)] lg:grid-cols-[minmax(20rem,0.85fr)_minmax(0,1.35fr)] lg:gap-[var(--space-8)]">
+              <motion.div
+                className="flex flex-col justify-end pb-[var(--space-4)] lg:justify-center lg:pb-0"
+                initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={scenicTransition(reducedMotion)}
+              >
                 <MuseumTitle size="hero" as="h1" />
-                <p className="mt-[var(--space-6)] max-w-[28ch] font-[family-name:var(--font-display)] text-[length:var(--text-title)] leading-[var(--leading-title)] text-[var(--text-on-dark-muted)]">
+                <p className="mt-[var(--space-6)] max-w-[22ch] font-[family-name:var(--font-display)] text-[clamp(1.65rem,2.8vw,2.35rem)] leading-[1.15] tracking-[-0.02em] text-white/88">
                   {welcomeCopy.subtitle}
                 </p>
-                <p className="mt-[var(--space-5)] max-w-[36ch] text-[length:var(--text-body)] text-[var(--text-on-dark-muted)]">
-                  This demonstration opens the door to the north — atlas, forest giants, and a night
-                  beam — so the full room already feels within reach.
+                <p className="mt-[var(--space-5)] max-w-[34ch] font-[family-name:var(--font-body)] text-[length:var(--text-body)] leading-[1.7] text-white/65">
+                  {welcomeCopy.atlasLead}
                 </p>
-                <div className="mt-[var(--space-8)]">
+                <div className="mt-[var(--space-7)]">
                   <DirectionPrompt message={welcomeCopy.atlasPrompt} direction="none" />
                 </div>
-                <div className="mt-[var(--space-8)] flex flex-wrap gap-[var(--space-4)]">
+                <div className="mt-[var(--space-7)] flex flex-wrap gap-[var(--space-4)]">
                   <LargeTouchButton
                     onClick={() => {
                       noteInteraction();
@@ -106,29 +105,28 @@ export function WelcomeExhibit() {
                     variant="secondary"
                     onClick={() => {
                       noteInteraction();
-                      setScreen("how-big");
-                    }}
-                  >
-                    How Big Is the North?
-                  </LargeTouchButton>
-                  <LargeTouchButton
-                    variant="secondary"
-                    onClick={() => {
-                      noteInteraction();
                       setScreen("explore-room");
                     }}
                   >
-                    This demonstration room
+                    {welcomeCopy.exploreCta}
                   </LargeTouchButton>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="relative min-h-0 flex-1 lg:py-[var(--space-4)]">
+              <motion.div
+                className="relative min-h-0 flex-1 lg:py-[var(--space-4)]"
+                initial={reducedMotion ? false : { opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  ...scenicTransition(reducedMotion),
+                  delay: reducedMotion ? 0 : 0.08,
+                }}
+              >
                 <WelcomeMap
                   activeZoneId={activeZone?.id as WelcomeZoneId | undefined}
                   onSelectZone={openHabitat}
                 />
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         ) : null}

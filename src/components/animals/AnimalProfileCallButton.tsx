@@ -49,7 +49,7 @@ export function AnimalProfileCallButton({
           play();
         }}
       >
-        {missing ? "Call recording coming soon" : playing ? "Playing…" : "Hear a call"}
+        {missing ? "Call unavailable" : playing ? "Playing…" : "Hear a call"}
       </LargeTouchButton>
       {!missing ? (
         <PlayingIndicator active={playing} muted={muted && !playing} />

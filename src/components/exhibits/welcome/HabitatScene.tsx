@@ -60,10 +60,7 @@ export function HabitatScene({
       exit={{ opacity: 0 }}
       transition={scenicTransition(reducedMotion)}
     >
-      <LayeredLandscape
-        tone={landscapeForZone(zone.atmosphere)}
-        badgeLabel={`${zone.shortLabel} habitat still · WebP plate`}
-      />
+      <LayeredLandscape tone={landscapeForZone(zone.atmosphere)} />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,14,18,0.72)_0%,rgba(6,14,18,0.25)_55%,transparent_100%)]" />
 
       <div className="safe-frame relative flex h-full flex-col justify-between">
