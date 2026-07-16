@@ -102,7 +102,7 @@ export const forestCopy = {
   tracksTitle: "Who Left This Track?",
   tracksLead: "Read the clue, then choose who passed this way.",
   callLabel: "Hear a call",
-  callUnavailable: "Call audio arrives with final media",
+  callUnavailable: "Call recording coming soon",
   callCaptionPrefix: "Caption",
   tryAgain: "Try again",
   matchLabel: "Match",

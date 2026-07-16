@@ -76,29 +76,43 @@ export function ForestHeroStage({
             transition={scenicTransition(reducedMotion)}
           >
             <div className="absolute inset-x-0 bottom-0 top-0 flex items-end justify-center px-2 pt-4">
-              {/* Shared ground plane — leave headroom so antlers never clip */}
               <div className="relative h-full w-full max-w-[42rem]">
+                {/* Soft light plate so dark cutouts separate from the treeline */}
+                <div
+                  className="pointer-events-none absolute bottom-[4%] left-1/2 h-[70%] w-[78%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(210,230,220,0.22)_0%,rgba(80,120,110,0.1)_45%,transparent_72%)] blur-md"
+                  aria-hidden
+                />
+
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={forestSilhouetteSrc(animal.id)}
                   alt=""
-                  className="absolute bottom-0 left-1/2 w-auto max-w-[90%] -translate-x-1/2 object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.55)]"
-                  style={{ height: `${Math.round(Math.min(scale, 1) * 78)}%` }}
+                  className="absolute bottom-0 left-[54%] w-auto max-w-[86%] -translate-x-1/2 object-contain object-bottom"
+                  style={{
+                    height: `${Math.round(Math.min(scale, 1) * 78)}%`,
+                    opacity: 0.94,
+                    filter:
+                      "brightness(0) invert(1) drop-shadow(0 0 22px rgba(160,210,180,0.4)) drop-shadow(0 16px 28px rgba(0,0,0,0.45))",
+                  }}
                   draggable={false}
                 />
 
                 <div
-                  className="absolute bottom-0 left-[5%] flex items-end"
+                  className="absolute bottom-0 left-[8%] flex items-end"
                   style={{ height: `${Math.round(HUMAN_RELATIVE_HEIGHT * 78)}%` }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={FOREST_HUMAN_SILHOUETTE}
                     alt=""
-                    className="h-full w-auto object-contain object-bottom opacity-90 brightness-0 invert"
+                    className="h-full w-auto object-contain object-bottom opacity-80"
+                    style={{
+                      filter:
+                        "brightness(0) invert(0.82) sepia(0.35) saturate(1.4) hue-rotate(5deg)",
+                    }}
                     draggable={false}
                   />
-                  <span className="absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap text-[10px] tracking-[0.2em] text-white/60 uppercase">
+                  <span className="absolute top-full left-1/2 mt-2 -translate-x-1/2 whitespace-nowrap text-[10px] tracking-[0.2em] text-white/55 uppercase">
                     {forestCopy.humanScale}
                   </span>
                 </div>

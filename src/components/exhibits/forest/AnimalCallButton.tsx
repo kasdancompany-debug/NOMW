@@ -2,6 +2,7 @@
 
 import type { Animal } from "@/types/content";
 import { forestCopy } from "@/content/exhibits/forest/content";
+import { forestCallAudioFor } from "@/content/exhibits/forest/calls";
 import { ListenControl } from "@/components/audio/ListenControl";
 import { MUSEUM_AUDIO } from "@/lib/media/audioConfig";
 
@@ -12,6 +13,8 @@ type AnimalCallButtonProps = {
 };
 
 function callCaptionFor(animal: Animal): string {
+  const wired = forestCallAudioFor(animal.id);
+  if (wired?.caption?.trim()) return wired.caption.trim();
   if (animal.callAudio.caption?.trim()) return animal.callAudio.caption.trim();
   const description = animal.callDescription.text.trim();
   if (description && !description.includes("[NEEDS RESEARCH]")) return description;
@@ -22,13 +25,15 @@ function callCaptionFor(animal: Animal): string {
  * Optional Listen for a forest animal call — caption always visible; never autoplays.
  */
 export function AnimalCallButton({ animal, prominent = false }: AnimalCallButtonProps) {
+  const call = forestCallAudioFor(animal.id) ?? animal.callAudio;
+
   return (
     <ListenControl
       id={`forest-call-${animal.id}`}
-      src={animal.callAudio.src}
+      src={call.src}
       caption={prominent ? "" : callCaptionFor(animal)}
       captionPrefix={prominent ? "" : forestCopy.callCaptionPrefix}
-      volume={animal.callAudio.volume ?? MUSEUM_AUDIO.callVolume}
+      volume={call.volume ?? MUSEUM_AUDIO.callVolume}
       listenLabel={forestCopy.callLabel}
       missingLabel={forestCopy.callUnavailable}
       hideIndicator={prominent}
